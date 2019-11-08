@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Items | List
+{% endblock title %}
+
+
+
+
+{% block content %}
+<!-- Page Inner -->
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Layouts</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Blank Layout</li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text text-center">
+                                <h5 class="card-title">Items</h5>
+                            </div>
+
+                            <p>Add <code>.table-hover</code> to enable a hover state on table rows within a
+                                <code>&lt;tbody&gt;</code>.</p>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name </th>
+                                        <th scope="col">Stock On Hand</th>
+                                        <th scope="col">Expiry Date</th>
+                                        <th scope="col">Actions</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items  %}
+                                    <tr>
+
+
+                                        <th scope="row">1</th>
+                                        <td href="{{item.get_absolute_url}}"> <a
+                                                href="{{item.get_absolute_url}}">{{item.name}}</a></td>
+                                        <td>{{item.stock_on_hand}}</td>
+                                        <td>{{item.expiry_date}}</td>
+                                        <td>
+                                            {% include 'snippets/delete_form.html' with item=item %}
+                                            <a href="{{item.get_update_url}}" class="btn btn-warning">Update</a>
+
+
+                                        </td>
+
+
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div><!-- Main Wrapper -->
+    {% endblock content %}

@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'items', 'departments','crispy_forms'
+    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -99,6 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -114,6 +115,7 @@ USE_L10N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = 'items.User'
+LOGIN_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

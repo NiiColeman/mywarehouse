@@ -1,0 +1,30 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col"> # </th>
+            <th scope="col"> Name </th>
+            <th scope="col"> Stock On Hand </th>
+            <th scope="col"> Expiry Date </th>
+            <th scope="col"> Actions </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        { % for item in items % }
+        <tr>
+
+            <th scope="row"> 1 </th>
+            <td href="{{item.get_absolute_url}}"> <a href="{{item.get_absolute_url}}"> {{item.name}} < /a>
+            </td>
+            <td> {{item.stock_on_hand}} </td>
+            <td> {{item.expiry_date}} </td>
+            <td>
+                { % include 'snippets/delete_form.html' with item = item % }
+                <a href="{{item.get_update_url}}" class="btn btn-warning"> Update </a>
+
+            </td>
+
+        </tr>
+        { % endfor % }
+    </tbody>
+</table>

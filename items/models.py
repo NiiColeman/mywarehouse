@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 from departments.models import Department
+from django.shortcuts import reverse
 
 
 class User(AbstractUser):
@@ -27,7 +28,7 @@ class Category(models.Model):
 
 
 class Item(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
     image = models.ImageField(upload_to='images/')
     category = models.ForeignKey(
@@ -37,6 +38,8 @@ class Item(models.Model):
     shelf_number = models.CharField(max_length=50)
     description = models.CharField(max_length=450)
     perishable = models.BooleanField(default=False)
+    expired=models.BooleanField(default=False)
+    timestamp=models.DateTimeField(auto_now=True)
 
     # TODO: Define fields here
 
@@ -52,3 +55,13 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse("items:item_detail", kwargs={"pk": self.pk})
+    
+    def get_update_url(self):
+        return reverse("items:item_update", kwargs={"pk": self.pk})
+    
+    def get_delete_url(self):
+        return reverse("items:item_delete", kwargs={"pk": self.pk})
+    
+
+
+

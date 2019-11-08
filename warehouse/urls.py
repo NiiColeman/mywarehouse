@@ -22,11 +22,10 @@ from items.views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    # path('accounts/signup/', classroom.SignUpView.as_view(), name='signup'),
-
     path('accounts/signup/manager/',
          ManagerSignUpView.as_view(), name='manager_signup'),
-    path("", index, name="index")
+    path("", index, name="index"),
+    path("items/", include('items.urls')),
 ]
 
 
