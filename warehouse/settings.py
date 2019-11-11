@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms'
+    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders'
 ]
 
 MIDDLEWARE = [

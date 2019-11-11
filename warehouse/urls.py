@@ -26,6 +26,7 @@ urlpatterns = [
          ManagerSignUpView.as_view(), name='manager_signup'),
     path("", index, name="index"),
     path("items/", include('items.urls')),
+    path("orders/", include('orders.urls')),
 ]
 
 

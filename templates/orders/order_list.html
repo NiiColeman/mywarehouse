@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<!-- Page Inner -->
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Layouts</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Blank Layout</li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text text-center">
+                                <h5 class="card-title">Items</h5>
+                            </div>
+
+                            <p>Add <code>.table-hover</code> to enable a hover state on table rows within a
+                                <code>&lt;tbody&gt;</code>.</p>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col"> Item Name </th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Department </th>
+                                        <th scope="col">Order Date</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders  %}
+                                    <tr>
+
+
+                                        <th scope="row">1</th>
+                                        <td href=""> <a href="">{{order.item}}</a></td>
+                                        <td>{{order.quantity}}</td>
+                                        <td>{{order.department}}</td>
+                                        <td>
+                                            <a href="http://">{{order.date_of_order}} |
+                                                ({{order.date_of_order|timesince}})</a>
+
+                                        </td>
+
+
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div><!-- Main Wrapper -->
+
+
+    {% endblock content %}

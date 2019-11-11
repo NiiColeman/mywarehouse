@@ -95,22 +95,21 @@
                                 class="accordion-icon fas fa-angle-left"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="app-mailbox.html">Add Items</a></li>
-                            <li><a href="app-todo.html">Item History</a></li>
+                            <li><a href="{% url 'items:item_list' %}">Item History</a></li>
+
+                            <li><a href="{% url 'items:add' %}">Add Items</a></li>
+                            <li><a href="{% url 'items:expiring_list' %}">Expring Items</a></li>
 
                         </ul>
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <i class="menu-icon icon-layers"></i><span>Layouts</span><i
+                            <i class="menu-icon icon-layers"></i><span>Orders</span><i
                                 class="accordion-icon fas fa-angle-left"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="layout-blank.html">Blank Page</a></li>
-                            <li><a href="layout-collapsed-sidebar.html">Collapsed Sidebar</a></li>
-                            <li><a href="layout-fixed-header.html">Fixed Header</a></li>
-                            <li><a href="layout-fixed-sidebar.html">Fixed Sidebar</a></li>
-                            <li><a href="layout-fixed-sidebar-header.html">Fixed Sidebar &amp; Header</a></li>
+                            <li><a href="{% url 'orders:list_order' %}">Orders</a></li>
+                            <li><a href="{% url 'orders:new_order' %}">New Order</a></li>
                         </ul>
                     </li>
                     <li>
