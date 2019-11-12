@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.views.generic import UpdateView, DeleteView
 from .models import Item, User, Category
 from datetime import datetime, timedelta
-
+from django.http import JsonResponse
 
 @login_required
 def index(request):
@@ -107,3 +107,17 @@ def expiring_list(request):
     print(datetime.now())
 
     return render(request, "items/expiring_items.html", context)
+
+
+
+
+
+
+def get_items(request,*args, **kwargs):
+    data={
+        "sales":50,
+        "report":70
+    }
+
+
+    return JsonResponse(data)

@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import CreateView, ListView, UpdateView
 # Create your views here.
 from .models import Order
 from .forms import OrderForm
 from items.models import Item
 from departments.models import Department
+from django.contrib import messages
 
 import uuid
 
@@ -18,11 +19,25 @@ class OrderCreateView(CreateView):
 
         item = Item.objects.get(name=form.instance.item)
         item.stock_on_hand = item.stock_on_hand-form.instance.quantity
-        order_id = generate_random_string(item.name)
-        form.instance.order_id = order_id
-        item.save()
-        form.save()
-        return redirect("orders:list_order")
+
+        if item.stock_on_hand < form.instance.quantity:
+
+            messages.success(
+                self.request, 'Order cannot be placed, requested itemsare more than the items in your inventory')
+            return redirect('orders:list_order')
+
+        elif item.stock_on_hand < 1:
+            messages.success(self.request, 'Item is low on stock')
+            return redirect('orders:list_order')
+
+        else:
+            order_id = generate_random_string(item.name)
+            form.instance.order_id = order_id
+            item.save()
+            form.save()
+            messages.success(
+                self.request, 'Order Has Been Made')
+            return redirect("orders:list_order")
 
 
 class OrderListView(ListView):
@@ -38,7 +53,7 @@ def order_list_view(request):
     context = {
         'items': items,
         'departments': departments,
-        'orders':orders,
+        'orders': orders,
     }
 
     return render(request, 'orders/order_list.html', context)
@@ -48,3 +63,110 @@ def generate_random_string(item):
     item_name = item.replace(' ', '-')
     rand_code = my_uuid = uuid.uuid4()
     return "{}-{}".format(item_name, rand_code)
+
+
+# display the details of the order
+def order_detail_view(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+
+    context = {
+        'order': order
+    }
+
+    return render(request, 'orders/order_detail.html', context)
+
+
+def order_update_view(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    new_order = get_order(order.order_id)
+    # print(new_order.quantity)
+
+    form = OrderForm(request.POST or None, instance=order)
+
+    if request.method == "POST":
+
+        form = OrderForm(request.POST or None, instance=order)
+
+        if form.is_valid():
+            item = Item.objects.get(name=form.instance.item)
+
+            if item.stock_on_hand < form.instance.quantity:
+
+                messages.success(
+                    request, 'Order cannot be placed, requested itemsare more than the items in your inventory')
+                return redirect('orders:list_order')
+
+            elif item.stock_on_hand < 1:
+                messages.success(request, 'Item is low on stock')
+                return redirect('orders:list_order')
+
+            else:
+                old_order = get_order(order.order_id)
+
+                if form.instance.quantity < old_order.quantity:
+                    newq = old_order.quantity-form.instance.quantity
+                    print('item stock on hand : {}'.format(item.stock_on_hand))
+                    item.stock_on_hand = item.stock_on_hand + newq
+                    print('item stock on hand : {}'.format(item.stock_on_hand))
+
+                    item.save()
+                    form.save()
+                    print('ew q : {}'.format(newq))
+
+                    messages.success(request, 'Your Order Has Been Placed')
+                    return redirect("orders:list_order")
+
+                else:
+                    new_order = get_order(order.order_id)
+
+                    print("new quantity :{}".format(new_order.quantity))
+
+                    newq = form.instance.quantity-old_order.quantity
+                    item.stock_on_hand = item.stock_on_hand - newq
+                    item.save()
+                    form.save()
+
+                    messages.success(request, "Order has Been Placed")
+
+                    return redirect("orders:list_order")
+                    # return redirect("orders:list_order")
+
+    context = {
+        'form': form,
+
+    }
+
+    return render(request, 'orders/order_update.html', context)
+
+
+def stock():
+    if itemstock-newquantity < 1:
+        return True
+    else:
+        return False
+
+
+def quantity(formquantity, quantity):
+    if formquantity > quantity:
+        return True
+    else:
+        return False
+
+
+def get_order(order_id):
+    try:
+        qs = Order.objects.filter(order_id=order_id)
+        return qs[0]
+
+    except:
+        return None
+
+
+def delete_view(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+
+    if request.method == "POST":
+
+        order.delete()
+        messages.success(request, "Item Has Been Deleted")
+        return redirect('orders:list_order')

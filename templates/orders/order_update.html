@@ -37,10 +37,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="help-welcome m-t-md">
-                                    <p>Try searching some of the support topics and articles bellow, or submit a new
-                                        request and we will get in touch with you.</p>
-                                </div>
+
 
 
 
@@ -64,7 +61,7 @@
                                                 </div>
 
 
-                                                <form action="{% url 'items:add' %}" method="POST"
+                                                <form action="{{order.get_update_url}}" method="POST"
                                                     enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         {% csrf_token %}
@@ -156,5 +153,3 @@
     </div><!-- Main Wrapper -->
 
     {% endblock content %}
-
-

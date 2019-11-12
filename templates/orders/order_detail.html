@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+order | Detail
+{% endblock title %}
+
+
+
+
+{% block content %}
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-order"><a href="#">Forms</a></li>
+                    <li class="breadcrumb-order active" aria-current="page">Image Crop</li>
+                </ol>
+            </nav>
+            <h1 class="page-title">Image Crop</h1>
+        </div>
+        <h6 class="page-desc">A simple jQuery image cropping plugin.</h6>
+        <div class="divider"></div>
+        <div class="row">
+            <div class="col-xl">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <img id="zoom_02" src="{{order.item.image.url}}"
+                                            data-zoom-image="{{order.item.image.url}}" style="width: 100%;" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text text-center">
+                                            <h2 class="card-title">{{order.item.name|title}}</h2>
+                                            <hr>
+
+                                        </div>
+                                        <h6>Item: <a data-toggle="modal"
+                                                data-target="#exampleModalCenter">{{order.item.name}}</a></h6>
+                                        <hr>
+                                        <!-- Modal -->
+
+                                        <!-- Modal End -->
+
+
+
+                                        <h6> Order ID: {{order.order_id}}</h6>
+                                        <hr>
+
+                                        <h6> Quantity: {{order.quantity}}</h6>
+                                        <hr>
+                                        <h6> Department: {{order.department.department_name}}</h6>
+                                        <hr>
+                                        <h6> Department Head: {{order.department.department_head}}</h6>
+                                        <hr>
+                                        <h6> Date Ordered: {{order.date_of_order|timesince}} Ago
+                                            ({{order.date_of_order}})</h6>
+                                        <hr>
+                                        <a href="{{order.get_update_url}}" class="btn btn-warnin">Update</a>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                            data-target="#exampleModal">
+                                            Delete
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Delete
+                                                            {{order.item.name}}</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this item?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        {% include 'snippets/order_delete.html' with order=order %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle">
+                                                            {{order.item.name|title}}
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Description:{{order.item.description|title}}
+                                                        <hr>
+                                                        Expiry Date:{{order.item.expiry_date}} -
+                                                        {{order.item.expiry_date|timeuntil}}
+                                                        <hr>
+                                                        Stock On Hand :{{order.item.stock_on_hand}}
+                                                        <hr>
+                                                        Added by:{{order.item.user|title}}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <a href="{{order.item.get_absolute_url}}"
+                                                            class="btn btn-info">View More</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
+    {% endblock content %}

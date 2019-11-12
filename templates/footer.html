@@ -19,7 +19,7 @@
                 <a href="javascript:void(0);" class="right-sidebar-toggle chat-item unread"
                     data-sidebar-id="chat-right-sidebar">
                     <div class="user-avatar">
-                        <img src="../../assets/images/avatars/avatar1.png" alt="">
+                        <img src="{% static './assets/images/avatars/avatar1.png' %}" alt="">
                     </div>
                     <div class="chat-info">
                         <span class="chat-author">David</span>
@@ -30,7 +30,7 @@
                 <a href="javascript:void(0);" class="right-sidebar-toggle chat-item unread active-user"
                     data-sidebar-id="chat-right-sidebar">
                     <div class="user-avatar">
-                        <img src="../../assets/images/avatars/avatar2.png" alt="">
+                        <img src="{% static './assets/images/avatars/avatar2.png' %} " alt="">
                     </div>
                     <div class="chat-info">
                         <span class="chat-author">Bob</span>
@@ -44,7 +44,7 @@
                 <a href="javascript:void(0);" class="right-sidebar-toggle chat-item"
                     data-sidebar-id="chat-right-sidebar">
                     <div class="user-avatar">
-                        <img src="../../assets/images/avatars/avatar3.png" alt="">
+                        <img src="{% static './assets/images/avatars/avatar3.png' %}" alt="">
                     </div>
                     <div class="chat-info">
                         <span class="chat-author">Tom</span>
@@ -55,7 +55,7 @@
                 <a href="javascript:void(0);" class="right-sidebar-toggle chat-item active-user"
                     data-sidebar-id="chat-right-sidebar">
                     <div class="user-avatar">
-                        <img src="../../assets/images/avatars/avatar4.png" alt="">
+                        <img src="{% static './assets/images/avatars/avatar4.png' %}" alt="">
                     </div>
                     <div class="chat-info">
                         <span class="chat-author">Anna</span>
@@ -66,7 +66,7 @@
                 <a href="javascript:void(0);" class="right-sidebar-toggle chat-item active-user"
                     data-sidebar-id="chat-right-sidebar">
                     <div class="user-avatar">
-                        <img src="../../assets/images/avatars/avatar5.png" alt="">
+                        <img src="{% static './assets/images/avatars/avatar5.png' %}" alt="">
                     </div>
                     <div class="chat-info">
                         <span class="chat-author">Noah</span>
@@ -96,7 +96,7 @@
                     <div class="chat-start-date">02/06/2017 5:58PM</div>
                     <div class="chat-bubble them">
                         <div class="chat-bubble-img-container">
-                            <img src="../../assets/images/avatars/avatar1.png" alt="">
+                            <img src="{% static './assets/images/avatars/avatar1.png' %}" alt="">
                         </div>
                         <div class="chat-bubble-text-container">
                             <span class="chat-bubble-text">Hello</span>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="chat-bubble them">
                         <div class="chat-bubble-img-container">
-                            <img src="../../assets/images/avatars/avatar1.png" alt="">
+                            <img src="{% static './assets/images/avatars/avatar1.png' %}" alt="">
                         </div>
                         <div class="chat-bubble-text-container">
                             <span class="chat-bubble-text">ipsum dolor sit amet</span>
@@ -134,35 +134,13 @@
 </div><!-- /Page Content -->
 </div><!-- /Page Container -->
 
-<script>
-    $(function () {
-        $("#datetimepicker1").datetimepicker();
-    });
-</script>
 
 
 
-
-<script>
-
-    $('select').select2();
-
-    $(".js-example-basic-multiple-limit").select2({
-        maximumSelectionLength: 2
-    });
-
-    $(".js-example-tokenizer").select2({
-        tags: true,
-        tokenSeparators: [',', ' ']
-    });
-
-    var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
-
-    $(".js-example-data-array").select2({
-        data: data
-    });
-</script>
 <!-- Javascripts -->
+
+
+
 <script src="{% static './assets/plugins/jquery/jquery-3.1.0.min.js' %}"></script>
 <script src="{% static './assets/plugins/bootstrap/popper.min.js' %}"></script>
 <script src="{% static './assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -172,6 +150,66 @@
 <script src="{% static './assets/plugins/chartjs/chart.min.js' %}"></script>
 <script src="{% static './assets/js/concept.min.js' %}"></script>
 <script src="{% static './assets/js/pages/dashboard.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/kt-2.5.1/r-2.2.3/rg-1.1.1/sc-2.0.1/sl-1.3.1/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/kt-2.5.1/r-2.2.3/rg-1.1.1/sc-2.0.1/sl-1.3.1/datatables.min.js"></script> -->
+
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/sc-2.0.1/sl-1.3.1/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+<script>
+
+    var endpoint = '/items/data'
+
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function (data) {
+            console.log(data.report)
+
+        },
+        error: function (error_data) {
+            console.log("error")
+            console.log(error_data)
+
+
+
+
+
+        }
+
+    })
+
+
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable(
+            {
+                dom: 'B<"clear">lfrtip',
+                buttons: {
+                    name: 'primary',
+                    buttons: ['copy', 'csv', 'excel', 'pdf']
+                }
+            }
+        )
+
+    });
+</script>
+<!-- {% block javascript %}
+
+{% endblock javascript %} -->
 </body>
 
 </html>

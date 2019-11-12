@@ -3,6 +3,7 @@ from items.models import Item, Category, User
 from django.shortcuts import reverse
 from departments.models import Department
 # Create your models here.
+from django.shortcuts import reverse
 
 
 class Order(models.Model):
@@ -31,9 +32,19 @@ class Order(models.Model):
     # def save(self):
     #     """Save method for Order."""
     #     pass
-
+    # GET THE ORDER DETAIL URL
     def get_absolute_url(self):
-        from django.core.urlresolvers import reverse
+
         return reverse('orders:order_detail', kwargs={'pk': self.pk})
+
+    # GET THE UPDATEBURL
+    def get_update_url(self):
+
+        return reverse('orders:order_update', kwargs={'pk': self.pk})
+
+    # GET THE DELETE URL
+    def get_update_url(self):
+
+        return reverse('orders:order_delete', kwargs={'pk': self.pk})
 
     # TODO: Define custom methods here

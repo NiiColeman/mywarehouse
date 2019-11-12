@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders'
+    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders','rest_framework','invoices'
 ]
 
 MIDDLEWARE = [

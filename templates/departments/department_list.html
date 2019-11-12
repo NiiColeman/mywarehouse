@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% block content %}
 
+{% block title %}
+Items | List
+{% endblock title %}
+
+
+
+
+{% block content %}
 <!-- Page Inner -->
 <div class="page-inner no-page-title">
     <div id="main-wrapper">
@@ -15,42 +22,44 @@
             </nav>
 
 
-            {% include 'snippets/messages.html' %}
+
+
+
+
             <div class="row">
                 <div class="col-xl">
                     <div class="card">
                         <div class="card-body">
                             <div class="text text-center">
-                                <h5 class="card-title">Items</h5>
+                                <h5 class="card-title">DEPARTMENTS</h5>
                             </div>
 
-                            <p>Add <code>.table-hover</code> to enable a hover state on table rows within a
-                                <code>&lt;tbody&gt;</code>.</p>
-                            <table class="table table-hover">
+
+
+
+
+
+                            <hr>
+                            <table class="table table-hover" id="table_id">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col"> Item Name </th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Department </th>
-                                        <th scope="col">Order Date</th>
+                                        <th scope="col">Name </th>
+                                        <th scope="col">Head of Department</th>
+
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for order in orders  %}
+                                    {% for  dept in departments  %}
                                     <tr>
 
 
                                         <th scope="row">1</th>
-                                        <td> <a href="{{order.get_absolute_url}}">{{order.item}}</a></td>
-                                        <td>{{order.quantity}}</td>
-                                        <td>{{order.department}}</td>
                                         <td>
-                                            <a href="{{order.get_absolute_url}}">{{order.date_of_order}} |
-                                                ({{order.date_of_order|timesince}})</a>
+                                            <a href="">{{dept.department_name}}</a></td>
+                                        <td>{{dept.department_head}}</td>
 
-                                        </td>
 
 
 
@@ -70,6 +79,16 @@
         </div>
 
     </div><!-- Main Wrapper -->
-
-
     {% endblock content %}
+
+
+    <!-- {% block javascript %}
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/kt-2.5.1/r-2.2.3/rg-1.1.1/sc-2.0.1/sl-1.3.1/datatables.min.css" />
+
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/kt-2.5.1/r-2.2.3/rg-1.1.1/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+
+
+    
+    {% endblock javascript %} -->
