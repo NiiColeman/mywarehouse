@@ -8,7 +8,8 @@ class ManagerSignupForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "email", "first_name", "last_name")
+        # fields = ("username", "email", "first_name", "last_name")
+        fields = ('__all__')
 
     @transaction.atomic
     def save(self):

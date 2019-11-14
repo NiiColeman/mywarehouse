@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
+{% load crispy_forms_tags %}
 {% block title %}
 order | Detail
 {% endblock title %}
@@ -15,13 +15,13 @@ order | Detail
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-order"><a href="#">Forms</a></li>
-                    <li class="breadcrumb-order active" aria-current="page">Image Crop</li>
+                    <li class="breadcrumb-order"><a href="#">Orders</a></li>
+                    <li class="breadcrumb-order active" aria-current="page"> / Order Details</li>
                 </ol>
             </nav>
-            <h1 class="page-title">Image Crop</h1>
+
         </div>
-        <h6 class="page-desc">A simple jQuery image cropping plugin.</h6>
+
         <div class="divider"></div>
         <div class="row">
             <div class="col-xl">
@@ -62,14 +62,73 @@ order | Detail
 
                                         <h6> Quantity: {{order.quantity}}</h6>
                                         <hr>
-                                        <h6> Department: {{order.department.department_name}}</h6>
+                                        <h6> Department: <a href="{{order.department.get_absolute_url}}">
+                                                {{order.department.department_name}}</a></h6>
                                         <hr>
                                         <h6> Department Head: {{order.department.department_head}}</h6>
                                         <hr>
                                         <h6> Date Ordered: {{order.date_of_order|timesince}} Ago
                                             ({{order.date_of_order}})</h6>
                                         <hr>
-                                        <a href="{{order.get_update_url}}" class="btn btn-warnin">Update</a>
+
+
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg">Update Order</button>
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="text text-center">
+                                                            <h5 class="card-title">Update {{order.item.name}}</h5>
+                                                        </div>
+                                                        <form action="{{order.get_update_url}}" method="POST"
+                                                            enctype="multipart/form-data">
+                                                            <div class="form-group">
+                                                                {% csrf_token %}
+                                                                {{form|crispy}}
+                                                            </div>
+
+
+
+
+
+                                                            <div class="form-group">
+                                                                <input type="submit" value="Update Order"
+                                                                    class="btn btn-info">
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+
                                         <button type="button" class="btn btn-danger" data-toggle="modal"
                                             data-target="#exampleModal">
                                             Delete

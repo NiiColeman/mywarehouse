@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import index, test_perm, ItemUpdateView, item_list, item_detail_view, expiring_list, get_items,delete_item
+from .views import (index, test_perm,
+ ItemUpdateView, 
+ item_list, 
+ item_detail_view, 
+ expiring_list, 
+ get_items,
+ delete_item,
+ search)
 
 app_name = 'items'
 
@@ -12,5 +19,6 @@ urlpatterns = [
 
     path("detail/<int:pk>/description", item_detail_view, name="item_detail"),
     path('<int:pk>/delete', delete_item, name='item_delete'),
-    path("data", get_items, name="get-data")
+    path("data", get_items, name="get-data"),
+    path("search", search, name="search")
 ]

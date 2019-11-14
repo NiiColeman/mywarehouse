@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Department | Detail
+{% endblock title %}
+
+
+
+
+{% block content %}
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Image Crop</li>
+                </ol>
+            </nav>
+            <h1 class="page-title"></h1>
+        </div>
+        {% include 'snippets/messages.html' %}
+
+
+
+
+        <div class="row">
+            <div class="col-xl">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class=" text-center">{{dept.department_name|title}}</h4>
+                        <hr>
+                        <h4>Head Of Department : {{dept.department_head|title}}</h4>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target=".bd-example-modal-lg">Update Department</button>
+                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Department</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% include 'snippets/department_update.html' with  dept=dept form=form %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                            Delete Department
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{dept.department_name}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are You Sure You Want To Delete <b>{{dept.department_name}} ? </b> All Orders
+                                        Associated With This Department Will Be Deleted
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="{{dept.get_delete_url}}" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xl">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text text-center">
+                            <h5 class="card-title">RECENT ORDERS</h5>
+                        </div>
+
+
+
+
+
+
+                        <hr>
+                        <table class="table table-hover" id="table_id">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col">Item Ordered </th>
+                                    <th scope="col">Item Quantity</th>
+                                    <th scope="col">Date Ordered</th>
+                                    <th scope="col">Order ID</th>
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for depts in dept.order_set.all  %}
+                                <tr>
+
+
+
+                                    <td><a href="{{depts.get_absolute_url}}">{{depts.item}}</a></td>
+                                    <td><a href="{{depts.get_absolute_url}}">{{depts.quantity}}</a></td>
+                                    <td><a href="{{depts.get_absolute_url}}">{{depts.date_of_order}}</a></td>
+                                    <td><a href="http://"></a>{{depts.order_id}}</td>
+
+
+
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+</div><!-- Main Wrapper -->
+{% endblock content %}

@@ -31,7 +31,7 @@ Items | List
 
                             <p>Add <code>.table-hover</code> to enable a hover state on table rows within a
                                 <code>&lt;tbody&gt;</code>.</p>
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="table_id">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -53,8 +53,8 @@ Items | List
                                         <td>{{item.stock_on_hand}}</td>
                                         <td>{{item.expiry_date}} | ({{item.expiry_date|timeuntil}})</td>
                                         <td>
-                                            {% include 'snippets/delete_form.html' with item=item %}
                                             <a href="{{item.get_update_url}}" class="btn btn-warning">Update</a>
+                                            <a href="{{item.delete_url}}" class="btn btn-danger">Update</a>
 
 
                                         </td>

@@ -19,6 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import ManagerSignUpView
 from items.views import index
+from .views import ItemChart, chartview
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -28,6 +30,12 @@ urlpatterns = [
     path("items/", include('items.urls')),
     path("orders/", include('orders.urls')),
     path("departments/", include("departments.urls")),
+    path("api/chart/data/", ItemChart.as_view(), name="api-data"),
+    path("chart/", chartview, name="chart"),
+
+
+
+
 ]
 
 

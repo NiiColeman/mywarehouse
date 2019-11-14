@@ -8,6 +8,9 @@ from django.views.generic import UpdateView, DeleteView
 from .models import Item, User, Category
 from datetime import datetime, timedelta
 from django.http import JsonResponse
+from .filters import ItemFilter
+
+
 
 @login_required
 def index(request):
@@ -121,3 +124,20 @@ def get_items(request,*args, **kwargs):
 
 
     return JsonResponse(data)
+
+
+
+
+
+def search(request):
+    items=Item.objects.all()
+    item_filter=ItemFilter(request.GET, queryset=items)
+
+    context={
+        'filter':item_filter
+    }
+
+
+    return render(request,'items/search.html',context)
+
+    

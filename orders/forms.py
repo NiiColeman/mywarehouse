@@ -11,10 +11,10 @@ class DateInput(forms.DateInput):
 
 
 class OrderForm(forms.ModelForm):
-    # department = forms.ChoiceField(widget=forms.Select(
-    #     attrs={'class': 'js-states form-control', 'placeholder': 'Select Department'}), required=True)
+    # department = forms.ModelChoiceField(widget=forms.Select(
+    #    attrs={'class': 'js-states form-control', 'placeholder': 'Select Department','tabindex':-1,'display':"None",'width':"100%"}), required=True,queryset=choice)
     # item = forms.ChoiceField(widget=forms.Select(
-    #     attrs={'class': 'js-states form-control', 'placeholder': 'Select Item'}), required=True)
+    #    attrs={'class': 'js-states form-control', 'placeholder': 'Select Item'}), required=True)
 
     class Meta:
         model = Order

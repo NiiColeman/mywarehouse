@@ -20,6 +20,7 @@ Items | List
                     <li class="breadcrumb-item active" aria-current="page">Blank Layout</li>
                 </ol>
             </nav>
+            {% include 'snippets/messages.html'  %}
 
 
 
@@ -33,12 +34,30 @@ Items | List
                             <div class="text text-center">
                                 <h5 class="card-title">DEPARTMENTS</h5>
                             </div>
+                            <hr>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target=".bd-example-modal-lg">Add New Department</button>
+                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New Department</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% include 'snippets/department_form.html' with form=form %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
 
-
-
-
-
-
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <hr>
                             <table class="table table-hover" id="table_id">
                                 <thead>
@@ -46,6 +65,9 @@ Items | List
                                         <th scope="col">#</th>
                                         <th scope="col">Name </th>
                                         <th scope="col">Head of Department</th>
+                                        <th scope="col">Action </th>
+
+
 
 
                                     </tr>
@@ -57,8 +79,10 @@ Items | List
 
                                         <th scope="row">1</th>
                                         <td>
-                                            <a href="">{{dept.department_name}}</a></td>
+                                            <a href="{{dept.get_absolute_url}}">{{dept.department_name}}</a></td>
                                         <td>{{dept.department_head}}</td>
+                                        <td> <a href="{{dept.get_absolute_url}}" class="btn btn-info">View</a></td>
+
 
 
 

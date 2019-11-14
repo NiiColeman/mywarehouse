@@ -1,6 +1,10 @@
 from django.db import models
+from django.shortcuts import reverse
 
-# Create your models here.
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+# Create your models here..
 
 
 class Department(models.Model):
@@ -24,9 +28,9 @@ class Department(models.Model):
         return reverse("departments:department_detail", kwargs={"pk": self.pk})
 
     def get_update_url(self):
-        return reverse("departments:department_update", kwargs={"pk": self.pk})
+        return reverse("departments:update_department", kwargs={"pk": self.pk})
 
     def get_delete_url(self):
-        return reverse("departments:department_delete", kwargs={"pk": self.pk})
+        return reverse("departments:delete_department", kwargs={"pk": self.pk})
 
     # TODO: Define custom methods here

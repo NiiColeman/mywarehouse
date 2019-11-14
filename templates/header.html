@@ -114,14 +114,13 @@
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <i class="menu-icon icon-brush"></i><span>Styles</span><i
+                            <i class="menu-icon icon-brush"></i><span>Departments</span><i
                                 class="accordion-icon fas fa-angle-left"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="style-typography.html">Typography</a></li>
-                            <li><a href="style-code.html">Code</a></li>
-                            <li><a href="style-tables.html">Tables</a></li>
-                            <li><a href="style-icons.html">Icons</a></li>
+                            <li><a href="{% url 'departments:department_list' %}">Departments</a></li>
+                            <li><a href="{% url 'departments:add_department' %}">Add Departments</a></li>
+
                         </ul>
                     </li>
                     <li>

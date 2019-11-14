@@ -28,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders','rest_framework','invoices'
+    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders', 'rest_framework', 'invoices', 'import_export', 'django_filters', 'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -117,6 +116,7 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'items.User'
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL='login'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -130,3 +130,16 @@ STATICFILES_DIRS = [
 VENV_PATH = os.path.join(BASE_DIR)
 STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
 MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'nii.coleman0@gmail.com'
+EMAIL_HOST_PASSWORD = 'coleman0'
+
+

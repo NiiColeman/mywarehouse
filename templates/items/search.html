@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- {% load crispy_forms_tags %} -->
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Layouts</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Blank Layout</li>
+                </ol>
+            </nav>
+
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <form method="get" class="form-group">
+                                <div class="row">
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.name.label_tag }}
+                                        {% render_field filter.form.name class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.user.label_tag }}
+                                        {% render_field filter.form.user class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.category.label_tag }}
+                                        {% render_field filter.form.category class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.expiry_date.label_tag }}
+                                        {% render_field filter.form.expiry_date class="form-control" type="date" %}
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.expiry_year.label_tag }}
+                                        {% render_field filter.form.expiry_year class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-6">
+                                        {{ filter.form.perishable.label_tag }}
+                                        {% render_field filter.form.perishable class="form-control" type="radio" %}
+
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                            <hr>
+
+
+                            <div class="row">
+                                <div class="col-xl">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text text-center">
+                                                <h5 class="card-title">Items</h5>
+                                            </div>
+
+
+
+                                            <table class="table table-hover" id="table_id">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Name </th>
+                                                        <th scope="col">Stock On Hand</th>
+                                                        <th scope="col">Expiry Date</th>
+                                                        <th scope="col">Actions</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in filter.qs  %}
+                                                    <tr>
+
+
+                                                        <th scope="row">1</th>
+                                                        <td href="{{item.get_absolute_url}}"> <a
+                                                                href="{{item.get_absolute_url}}">{{item.name}}</a></td>
+                                                        <td>{{item.stock_on_hand}}</td>
+                                                        <td>{{item.expiry_date}}</td>
+                                                        <td>
+
+                                                            <a href="{{item.get_update_url}}"
+                                                                class="btn btn-warning">Update</a>
+                                                            <a href="{{item.delete_url}}"
+                                                                class="btn btn-danger">Update</a>
+
+
+
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+    < !--Main Wrapper-->
+
+        {% endblock content %}
+
+
+
+        {% block js %}
+
+        {% endblock js %}

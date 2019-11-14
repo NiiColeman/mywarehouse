@@ -6,7 +6,7 @@ from .forms import OrderForm
 from items.models import Item
 from departments.models import Department
 from django.contrib import messages
-
+from invoices.models import Invoice
 import uuid
 
 
@@ -35,6 +35,9 @@ class OrderCreateView(CreateView):
             form.instance.order_id = order_id
             item.save()
             form.save()
+            order=get_order(order_id=order_id)
+            invoice_id=invoice_id=generate_invoice_id()
+            create_invoice(order,invoice_id)
             messages.success(
                 self.request, 'Order Has Been Made')
             return redirect("orders:list_order")
@@ -68,9 +71,11 @@ def generate_random_string(item):
 # display the details of the order
 def order_detail_view(request, pk):
     order = get_object_or_404(Order, pk=pk)
+    form=OrderForm(request.POST or None, instance=order)
 
     context = {
-        'order': order
+        'order': order,
+        'form':form
     }
 
     return render(request, 'orders/order_detail.html', context)
@@ -113,7 +118,7 @@ def order_update_view(request, pk):
                     form.save()
                     print('ew q : {}'.format(newq))
 
-                    messages.success(request, 'Your Order Has Been Placed')
+                    messages.success(request, 'Order Has Been Updated')
                     return redirect("orders:list_order")
 
                 else:
@@ -126,7 +131,7 @@ def order_update_view(request, pk):
                     item.save()
                     form.save()
 
-                    messages.success(request, "Order has Been Placed")
+                    messages.success(request, "Order has Been Updated")
 
                     return redirect("orders:list_order")
                     # return redirect("orders:list_order")
@@ -170,3 +175,17 @@ def delete_view(request, pk):
         order.delete()
         messages.success(request, "Item Has Been Deleted")
         return redirect('orders:list_order')
+
+
+def generate_invoice_id():
+       
+       inv_code = my_uuid = uuid.uuid4()
+       return "INV-{}".format(inv_code)
+
+
+def create_invoice(order,invoice_id):
+    inv=Invoice.objects.create(order=order,invoice_id=invoice_id)
+
+    return inv
+
+
