@@ -4,7 +4,8 @@ from departments.models import Department
 
 
 from .models import Order
-choice=Department.objects.all()
+choice = Department.objects.all()
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -19,4 +20,4 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         widgets = {'date_of_order': DateInput()}
-        fields = ("department", "item", "date_of_order", "quantity", "total")
+        fields = ("department", "item", "date_of_order", "quantity")

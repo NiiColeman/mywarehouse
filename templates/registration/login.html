@@ -11,6 +11,7 @@
     </div>
     <div class="login-body">
 
+      {% include 'snippets/messages.html' %}
       <h2>Login</h2>
       <form method="post">
         {% csrf_token %}

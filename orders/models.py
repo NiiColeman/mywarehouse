@@ -12,7 +12,7 @@ class Order(models.Model):
     date_of_order = models.DateField(auto_now=False)
     order_id = models.CharField(unique=True, max_length=50)
     quantity = models.IntegerField(default=1)
-    total = models.IntegerField()
+    total = models.IntegerField(default=1, null=True, blank=True)
 
     """Model definition for Order."""
 

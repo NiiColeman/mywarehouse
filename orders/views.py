@@ -8,6 +8,7 @@ from departments.models import Department
 from django.contrib import messages
 from invoices.models import Invoice
 import uuid
+from .filters import OrderFilter
 
 
 class OrderCreateView(CreateView):
@@ -35,9 +36,9 @@ class OrderCreateView(CreateView):
             form.instance.order_id = order_id
             item.save()
             form.save()
-            order=get_order(order_id=order_id)
-            invoice_id=invoice_id=generate_invoice_id()
-            create_invoice(order,invoice_id)
+            order = get_order(order_id=order_id)
+            invoice_id = invoice_id = generate_invoice_id()
+            create_invoice(order, invoice_id)
             messages.success(
                 self.request, 'Order Has Been Made')
             return redirect("orders:list_order")
@@ -49,6 +50,7 @@ class OrderListView(ListView):
 
 
 def order_list_view(request):
+    form = OrderForm()
     orders = Order.objects.all()
     items = Item.objects.all()
     departments = Department.objects.all()
@@ -57,6 +59,7 @@ def order_list_view(request):
         'items': items,
         'departments': departments,
         'orders': orders,
+        'form': form
     }
 
     return render(request, 'orders/order_list.html', context)
@@ -71,11 +74,11 @@ def generate_random_string(item):
 # display the details of the order
 def order_detail_view(request, pk):
     order = get_object_or_404(Order, pk=pk)
-    form=OrderForm(request.POST or None, instance=order)
+    form = OrderForm(request.POST or None, instance=order)
 
     context = {
         'order': order,
-        'form':form
+        'form': form
     }
 
     return render(request, 'orders/order_detail.html', context)
@@ -178,14 +181,23 @@ def delete_view(request, pk):
 
 
 def generate_invoice_id():
-       
-       inv_code = my_uuid = uuid.uuid4()
-       return "INV-{}".format(inv_code)
+
+    inv_code = my_uuid = uuid.uuid4()
+    return "INV-{}".format(inv_code)
 
 
-def create_invoice(order,invoice_id):
-    inv=Invoice.objects.create(order=order,invoice_id=invoice_id)
+def create_invoice(order, invoice_id):
+    inv = Invoice.objects.create(order=order, invoice_id=invoice_id)
 
     return inv
 
 
+def search(request):
+    orders = Order.objects.all()
+    order_filter = OrderFilter(request.GET, queryset=orders)
+
+    context = {
+        'filter': order_filter
+    }
+
+    return render(request, 'orders/search.html', context)

@@ -3,23 +3,42 @@ from django.contrib.auth.decorators import login_required
 from accounts.decorators import wmanager_required, wstaff_required
 from .forms import ItemForm
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 # Create your views here.
 from django.views.generic import UpdateView, DeleteView
 from .models import Item, User, Category
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 from .filters import ItemFilter
-
-
+from orders.models import Order
+from datetime import datetime
+from django.db.models import Count
+from django.db.models.functions import Trunc
+from django.contrib.auth.decorators import user_passes_test
 
 @login_required
 def index(request):
+    current_month = datetime.now().month
+    monthly_orders = Order.objects.filter(date_of_order__month=current_month)
+    print(monthly_orders)
 
-    return render(request, "items/index.html", {})
+    month_order = Order.objects.annotate(order_month=Trunc(
+        'date_of_order', 'month')).values('order_month').annotate(orders=Count('id'))
+    for orders in month_order:
+        print("whats {}".format(orders['orders']))
+    items=Item.objects.all()
+    date_me = datetime.now()+timedelta(60)
+    expiring_product = Item.objects.filter(
+        expiry_date__lte=date_me)
+    expired = Item.objects.filter(expiry_date__lte=datetime.now())
+
+    return render(request, "items/index.html", {'monthly_orders':monthly_orders,'expiring_product':expiring_product,'expired':expired,'items':items})
 
 
 @login_required
 # @wmanager_required
+@user_passes_test(lambda u: u.is_superuser)
+
 def test_perm(request):
     form = ItemForm(request.POST or None, request.FILES or None)
 
@@ -29,7 +48,7 @@ def test_perm(request):
             form.save()
             messages.success(request, 'item has been added')
 
-            return redirect('items:add')
+            return redirect('items:item_list')
 
     context = {
         'form': form
@@ -38,10 +57,11 @@ def test_perm(request):
     return render(request, 'items/add_items.html', context)
 
 
-class ItemUpdateView(UpdateView):
+class ItemUpdateView(UpdateView,LoginRequiredMixin):
     model = Item
     form_class = ItemForm
     template_name = "items/update.html"
+    
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -50,8 +70,9 @@ class ItemUpdateView(UpdateView):
         messages.success(self.request, "Item has been updated")
         return redirect('items:item_list')
 
-
+@login_required
 def item_list(request):
+    form=ItemForm()
     items = Item.objects.all()
     date_me = datetime.now()+timedelta(60)
     expiring_product = Item.objects.filter(
@@ -61,7 +82,8 @@ def item_list(request):
     context = {
         'items': items,
         # 'expring_products': expiring_product,
-        'expired': expired
+        'expired': expired,
+        'form':form
     }
     print(date_me)
     print(expiring_product)
@@ -69,7 +91,7 @@ def item_list(request):
 
     return render(request, "items/item_list.html", context)
 
-
+@login_required
 def delete_item(request, pk):
     item = get_object_or_404(Item, pk=pk)
     if request.method == "POST":
@@ -80,7 +102,7 @@ def delete_item(request, pk):
 
     return redirect(request, 'snippets/delete_form.html')
 
-
+@login_required
 def item_detail_view(request, pk):
 
     item = get_object_or_404(Item, pk=pk)
@@ -92,7 +114,7 @@ def item_detail_view(request, pk):
 
     return render(request, 'items/item_detail.html', context)
 
-
+@login_required
 def expiring_list(request):
     items = Item.objects.all()
     date_me = datetime.now()+timedelta(60)
@@ -112,32 +134,30 @@ def expiring_list(request):
     return render(request, "items/expiring_items.html", context)
 
 
-
-
-
-
-def get_items(request,*args, **kwargs):
-    data={
-        "sales":50,
-        "report":70
+def get_items(request, *args, **kwargs):
+    data = {
+        "sales": 50,
+        "report": 70
     }
-
 
     return JsonResponse(data)
 
-
-
-
-
+@login_required
 def search(request):
-    items=Item.objects.all()
-    item_filter=ItemFilter(request.GET, queryset=items)
+    items = Item.objects.all()
+    item_filter = ItemFilter(request.GET, queryset=items)
 
-    context={
-        'filter':item_filter
+    context = {
+        'filter': item_filter
     }
 
+    return render(request, 'items/search.html', context)
 
-    return render(request,'items/search.html',context)
 
-    
+
+
+def low_stock(request):
+    items=Item.objects.filter(stock_on_hand__lte=10)
+
+
+    return render(request,'items/low_stock.html',{'items':items})

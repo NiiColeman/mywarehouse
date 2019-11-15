@@ -9,8 +9,8 @@
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-item"><a href="#">Layouts</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Blank Layout</li>
+                    <li class="breadcrumb-item"><a href="#">Search</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Orders</li>
                 </ol>
             </nav>
 
@@ -23,30 +23,34 @@
                             <form method="get" class="form-group">
                                 <div class="row">
                                     <div class="form-group col-sm-4 col-md-3">
-                                        {{ filter.form.name.label_tag }}
-                                        {% render_field filter.form.name class="form-control" %}
+                                        {{ filter.form.item.label_tag }}
+                                        {% render_field filter.form.item class="form-control" %}
                                     </div>
                                     <div class="form-group col-sm-4 col-md-3">
-                                        {{ filter.form.user.label_tag }}
-                                        {% render_field filter.form.user class="form-control" %}
+                                        {{ filter.form.department.label_tag }}
+                                        {% render_field filter.form.department class="form-control" %}
                                     </div>
                                     <div class="form-group col-sm-4 col-md-3">
-                                        {{ filter.form.category.label_tag }}
-                                        {% render_field filter.form.category class="form-control" %}
+                                        {{ filter.form.quantity.label_tag }}
+                                        {% render_field filter.form.quantity class="form-control" %}
                                     </div>
                                     <div class="form-group col-sm-4 col-md-3">
-                                        {{ filter.form.expiry_date.label_tag }}
-                                        {% render_field filter.form.expiry_date class="form-control" type="date" %}
+                                        {{ filter.form.quantity__gt.label_tag }}
+                                        {% render_field filter.form.quantity__gt class="form-control" %}
                                     </div>
 
                                     <div class="form-group col-sm-4 col-md-3">
-                                        {{ filter.form.expiry_year.label_tag }}
-                                        {% render_field filter.form.expiry_year class="form-control" %}
+                                        {{ filter.form.quantity__lt.label_tag }}
+                                        {% render_field filter.form.quantity__lt class="form-control" %}
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-6">
-                                        {{ filter.form.perishable.label_tag }}
-                                        {% render_field filter.form.perishable class="form-control" type="radio" %}
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.date_of_order.label_tag }}
+                                        {% render_field filter.form.date_of_order class="form-control" type="date" %}
+                                    </div>
 
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.year_of_order.label_tag }}
+                                        {% render_field filter.form.year_of_order class="form-control" %}
                                     </div>
                                 </div>
 
@@ -64,7 +68,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="text text-center">
-                                                <h5 class="card-title">Items</h5>
+                                                <h5 class="card-title">Orders</h5>
                                             </div>
 
 
@@ -73,31 +77,33 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
-                                                        <th scope="col">Name </th>
-                                                        <th scope="col">Stock On Hand</th>
-                                                        <th scope="col">Expiry Date</th>
+                                                        <th scope="col">Item </th>
+                                                        <th scope="col">Department</th>
+                                                        <th scope="col">Date of Order</th>
+                                                        <th scope="col">Quantity</th>
+
                                                         <th scope="col">Actions</th>
 
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for item in filter.qs  %}
+                                                    {% for order in filter.qs  %}
                                                     <tr>
 
 
                                                         <th scope="row">1</th>
-                                                        <td href="{{item.get_absolute_url}}"> <a
-                                                                href="{{item.get_absolute_url}}">{{item.name}}</a></td>
-                                                        <td>{{item.stock_on_hand}}</td>
-                                                        <td>{{item.expiry_date}}</td>
+                                                        <td> <a
+                                                                href="{{order.item.get_absolute_url}}">{{order.item.name}}</a>
+                                                        </td>
+                                                        <td> <a href=" {{order.department.get_absolute_url}}"></a>
+                                                            {{order.department.department_name}}</td>
+                                                        <td>{{order.date_of_order}}</td>
+                                                        <td>{{order.quantity}}</td>
+
                                                         <td>
 
-                                                            <a href="{{item.get_update_url}}"
-                                                                class="btn btn-warning">Update</a>
-                                                            <a href="{{item.delete_url}}"
-                                                                class="btn btn-danger">Update</a>
-
-
+                                                            <a href=" {{order.get_absolute_url}}"
+                                                                class="btn btn-warning">View</a>
 
                                                         </td>
 

@@ -80,12 +80,12 @@
     <div class="page-content">
         <div class="secondary-sidebar">
             <div class="secondary-sidebar-bar">
-                <a href="#" class="logo-box">concept</a>
+                <a href="/" class="logo-box">Warehouse</a>
             </div>
             <div class="secondary-sidebar-menu">
                 <ul class="accordion-menu">
                     <li class="active-page">
-                        <a href="index.html">
+                        <a href="/">
                             <i class="menu-icon icon-home4"></i><span>Dashboard</span>
                         </a>
                     </li>
@@ -99,6 +99,12 @@
 
                             <li><a href="{% url 'items:add' %}">Add Items</a></li>
                             <li><a href="{% url 'items:expiring_list' %}">Expring Items</a></li>
+                            <li><a href="{% url 'items:low_stock' %}">Low Stock</a></li>
+                            <li><a href="{% url 'items:search' %}">Item Report</a></li>
+
+
+
+
 
                         </ul>
                     </li>
@@ -110,6 +116,7 @@
                         <ul class="sub-menu">
                             <li><a href="{% url 'orders:list_order' %}">Orders</a></li>
                             <li><a href="{% url 'orders:new_order' %}">New Order</a></li>
+                            <li><a href="{% url 'orders:search' %}">Order Report</a></li>
                         </ul>
                     </li>
                     <li>
@@ -125,42 +132,28 @@
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <i class="menu-icon icon-flash_on"></i><span>Components</span><i
+                            <i class="menu-icon icon-flash_on"></i><span>Users</span><i
                                 class="accordion-icon fas fa-angle-left"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="comp-alerts.html">Alerts</a></li>
-                            <li><a href="comp-badge.html">Badge</a></li>
-                            <li><a href="comp-breadcrumb.html">Breadcrumb</a></li>
-                            <li><a href="comp-buttons.html">Buttons</a></li>
-                            <li><a href="comp-btn-group.html">Button Group</a></li>
-                            <li><a href="comp-card.html">Card</a></li>
-                            <li><a href="comp-collapse.html">Collapse</a></li>
-                            <li><a href="comp-dropdowns.html">Dropdowns</a></li>
-                            <li><a href="comp-lists.html">List Group</a></li>
-                            <li><a href="comp-media-object.html">Media Object</a></li>
-                            <li><a href="comp-modal.html">Modal</a></li>
-                            <li><a href="comp-navs.html">Navs</a></li>
-                            <li><a href="comp-navbar.html">Navbar</a></li>
-                            <li><a href="comp-pagination.html">Pagination</a></li>
-                            <li><a href="comp-popovers.html">Popovers</a></li>
-                            <li><a href="comp-progress.html">Progress</a></li>
-                            <li><a href="comp-spinners.html">Spinners</a></li>
-                            <li><a href="comp-toasts.html">Toasts</a></li>
-                            <li><a href="comp-tooltips.html">Tooltips</a></li>
+                            <li><a href="{% url 'users' %}">User List</a></li>
+                            <li><a href="comp-badge.html">Add User</a></li>
+
                         </ul>
                     </li>
                     <li>
                         <a href="javascript:void(0)">
-                            <i class="menu-icon icon-code"></i><span>Forms</span><i
+                            <i class="menu-icon icon-code"></i><span>Accounts</span><i
                                 class="accordion-icon fas fa-angle-left"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="form-elements.html">Form Elements</a></li>
-                            <li><a href="form-upload.html">File Upload</a></li>
-                            <li><a href="form-image-crop.html">Image Crop</a></li>
-                            <li><a href="form-image-zoom.html">Image Zoom</a></li>
-                            <li><a href="form-select2.html">Select2</a></li>
+
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            {% endif %}
+
+
+
                         </ul>
                     </li>
                     <li>
@@ -168,7 +161,7 @@
                             <i class="menu-icon icon-show_chart"></i><span>Charts</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="javascript:void(0)">
                             <i class="menu-icon icon-star"></i><span>Pages</span><i
                                 class="accordion-icon fas fa-angle-left"></i>
@@ -184,9 +177,9 @@
                             <li><a href="lockscreen.html">Lockscreen</a></li>
                             <li><a href="pricing-tables.html">Pricing Tables</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li class="menu-divider"></li>
-                    <li>
+                    <!-- <li>
                         <a href="#">
                             <i class="menu-icon icon-help_outline"></i><span>Documentation</span>
                         </a>
@@ -196,7 +189,7 @@
                             <i class="menu-icon icon-public"></i><span>Changelog</span><span
                                 class="badge badge-danger">1.0</span>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>

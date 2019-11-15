@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from accounts.views import ManagerSignUpView
+from accounts.views import ManagerSignUpView, user_list, UserCreateView, UserUpdateView,user_detail_view
 from items.views import index
 from .views import ItemChart, chartview
 
@@ -26,12 +26,23 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/manager/',
          ManagerSignUpView.as_view(), name='manager_signup'),
+    path('accounts/add/user/',
+         UserCreateView.as_view(), name='add_user'),
+    path('accounts/<int:pk>/update/user/',
+         UserUpdateView.as_view(), name='update_user'),
+     path('accounts/<int:pk>/details/user/',
+         user_detail_view, name='user_detail'),
+
+
+
+    path("accounts/users", user_list, name="users"),
     path("", index, name="index"),
     path("items/", include('items.urls')),
     path("orders/", include('orders.urls')),
     path("departments/", include("departments.urls")),
     path("api/chart/data/", ItemChart.as_view(), name="api-data"),
     path("chart/", chartview, name="chart"),
+
 
 
 

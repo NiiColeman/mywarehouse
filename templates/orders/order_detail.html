@@ -72,6 +72,7 @@ order | Detail
                                         <hr>
 
 
+                                        {% if user.is_superuser %}
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target=".bd-example-modal-lg">Update Order</button>
                                         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
@@ -157,7 +158,7 @@ order | Detail
                                                 </div>
                                             </div>
                                         </div>
-
+                                        {% endif %}
 
 
 

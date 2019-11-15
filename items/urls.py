@@ -6,7 +6,9 @@ from .views import (index, test_perm,
  expiring_list, 
  get_items,
  delete_item,
- search)
+ search,
+ low_stock,
+ )
 
 app_name = 'items'
 
@@ -16,6 +18,8 @@ urlpatterns = [
     path('update/<int:pk>', ItemUpdateView.as_view(), name="item_update"),
     path('list', item_list, name='item_list'),
     path('expiring-list', expiring_list, name='expiring_list'),
+    path('low-stock', low_stock, name='low_stock'),
+
 
     path("detail/<int:pk>/description", item_detail_view, name="item_detail"),
     path('<int:pk>/delete', delete_item, name='item_delete'),

@@ -16,8 +16,8 @@ Items | List
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-item"><a href="#">Layouts</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Blank Layout</li>
+                    <li class="breadcrumb-item"><a href="#">Items </a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Item List</li>
                 </ol>
             </nav>
 
@@ -28,9 +28,36 @@ Items | List
                             <div class="text text-center">
                                 <h5 class="card-title">Items</h5>
                             </div>
+                            {% include 'snippets/messages.html' %}
 
-                            <p>Add <code>.table-hover</code> to enable a hover state on table rows within a
-                                <code>&lt;tbody&gt;</code>.</p>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target=".bd-example-modal-lg">Add New Item</button>
+                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New Item</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% include 'items/item_forms.html' with form=form %}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+
                             <table class="table table-hover" id="table_id">
                                 <thead>
                                     <tr>
@@ -54,8 +81,8 @@ Items | List
                                         <td>{{item.expiry_date}}</td>
                                         <td>
 
-                                            <a href="{{item.get_update_url}}" class="btn btn-warning">Update</a>
-                                            <a href="{{item.delete_url}}" class="btn btn-danger">Update</a>
+                                            <a href="{{item.get_absolute_url}}" class="btn btn-primary">View</a>
+
 
 
 
