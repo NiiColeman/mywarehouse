@@ -187,7 +187,7 @@
                                                     {% for order in monthly_orders  %}
                                                     <tr>
                                                             <th scope="row"> <a href="{{order.item.get_absolute_url}}">{{order.item.name}}</a> </th>
-                                                            <td><a href="{{order.department.get_absolute_url}}">{{order.department.department_name}} </a>{{order.department.department_name}}</td>
+                                                            <td><a href="{{order.department.get_absolute_url}}">{{order.department.department_name}} </a></td>
                                                             <td>{{order.quantity}}</td>
                                                             <td>{{order.date_of_order}}</td>
                                                             <td><a href="{{order.get_absolute_url}}" class='btn btn-info'>View</a></td>

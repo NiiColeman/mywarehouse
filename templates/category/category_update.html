@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 
 
-<form action="{% url 'departments:add_department' %}" method="POST" enctype="multipart/form-data">
+<form action="{{cat.get_absolute_url}}" method="POST" enctype="multipart/form-data">
     <div class="form-group">
         {% csrf_token %}
         {{form|crispy}}
@@ -12,7 +12,7 @@
 
 
     <div class="form-group">
-        <input type="submit" value="Add Department" class="btn btn-info">
+        <input type="submit" value="Add Category" class="btn btn-info">
     </div>
 
 </form>

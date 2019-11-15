@@ -3,7 +3,7 @@
 
 
 {% block title %}
-Department | Detail
+Category | Detail
 {% endblock title %}
 
 
@@ -15,8 +15,8 @@ Department | Detail
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-item"><a href="#">DEpartment</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Details</li>
+                    <li class="breadcrumb-item"><a href="#">Category</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
                 </ol>
             </nav>
             <h1 class="page-title"></h1>
@@ -30,23 +30,23 @@ Department | Detail
             <div class="col-xl">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class=" text-center">{{dept.department_name|title}}</h4>
+                        <h4 class=" text-center">{{cat.name|title}}</h4>
                         <hr>
-                        <h4>Head Of Department : {{dept.department_head|title}}</h4>
+
                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target=".bd-example-modal-lg">Update Department</button>
+                            data-target=".bd-example-modal-lg">Update Category</button>
                         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
                             aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Department</h5>
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Update Category</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        {% include 'snippets/department_update.html' with  dept=dept form=form %}
+                                        {% include 'category/category_update.html' with  cat=cat form=form %}
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -59,7 +59,7 @@ Department | Detail
 
 
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-                            Delete Department
+                            Delete {{cat.name|title}}
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
@@ -67,19 +67,19 @@ Department | Detail
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">{{dept.department_name}}</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">{{cat.name|title}}</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        Are You Sure You Want To Delete <b>{{dept.department_name}} ? </b> All Orders
-                                        Associated With This Department Will Be Deleted
+                                        Are You Sure You Want To Delete <b>{{cat.name}} ? </b> All items
+                                        Associated With This Category Will Be Deleted
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Close</button>
-                                        <a href="{{dept.get_delete_url}}" class="btn btn-danger">Delete</a>
+                                        <a href="{{cat.get_delete_url}}" class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@ Department | Detail
                 <div class="card">
                     <div class="card-body">
                         <div class="text text-center">
-                            <h5 class="card-title">RECENT ORDERS</h5>
+                            <h5 class="card-title">Associated Items</h5>
                         </div>
 
 
@@ -109,25 +109,25 @@ Department | Detail
                             <thead>
                                 <tr>
 
-                                    <th scope="col">Item Ordered </th>
+                                    <th scope="col">Item Name </th>
                                     <th scope="col">Item Quantity</th>
-                                    <th scope="col">Date Ordered</th>
-                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Expiry Date</th>
+                                    <th scope="col">Actions</th>
 
 
 
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for depts in dept.order_set.all  %}
+                                {% for cats in cat.categories.all  %}
                                 <tr>
 
 
 
-                                    <td><a href="{{depts.get_absolute_url}}">{{depts.item}}</a></td>
-                                    <td><a href="{{depts.get_absolute_url}}">{{depts.quantity}}</a></td>
-                                    <td><a href="{{depts.get_absolute_url}}">{{depts.date_of_order}}</a></td>
-                                    <td><a href="http://"></a>{{depts.order_id}}</td>
+                                    <td><a href="{{cats.get_absolute_url}}">{{cats.name}}</a></td>
+                                    <td><a href="{{cats.get_absolute_url}}">{{cats.stock_on_hand}}</a></td>
+                                    <td><a href="{{cats.get_absolute_url}}">{{cats.expiry_date}}</a></td>
+                                    <td><a href="{{cats.get_absolute_url}}" class="btn btn-primary">View</a> </td>
 
 
 

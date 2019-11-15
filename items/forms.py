@@ -17,3 +17,10 @@ class ItemForm(forms.ModelForm):
         widgets={'expiry_date':DateInput()}
         model = Item
         exclude = ('user','expired')
+
+
+class CategoryForm(forms.ModelForm):
+    
+    class Meta:
+        model = Category
+        fields = ("name",)

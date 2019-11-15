@@ -26,9 +26,18 @@ class Category(models.Model):
         """Unicode representation of Category."""
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("items:category_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse("items:update_category", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("items:category_delete", kwargs={"pk": self.pk})
+
 
 class Item(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
     image = models.ImageField(upload_to='images/')
     category = models.ForeignKey(
@@ -38,8 +47,8 @@ class Item(models.Model):
     shelf_number = models.CharField(max_length=50)
     description = models.CharField(max_length=450)
     perishable = models.BooleanField(default=False)
-    expired=models.BooleanField(default=False)
-    timestamp=models.DateTimeField(auto_now=True)
+    expired = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now=True)
 
     # TODO: Define fields here
 
@@ -55,13 +64,9 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse("items:item_detail", kwargs={"pk": self.pk})
-    
+
     def get_update_url(self):
         return reverse("items:item_update", kwargs={"pk": self.pk})
-    
+
     def get_delete_url(self):
         return reverse("items:item_delete", kwargs={"pk": self.pk})
-    
-
-
-

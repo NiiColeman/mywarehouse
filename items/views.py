@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import wmanager_required, wstaff_required
-from .forms import ItemForm
+from .forms import ItemForm,CategoryForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 # Create your views here.
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import UpdateView, DeleteView,CreateView
 from .models import Item, User, Category
 from datetime import datetime, timedelta
 from django.http import JsonResponse
@@ -161,3 +161,71 @@ def low_stock(request):
 
 
     return render(request,'items/low_stock.html',{'items':items})
+
+
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class=CategoryForm
+    template_name = "category/category_form.html"
+
+    def form_valid(self,form):
+
+
+        form.save()
+        messages.success(self.request,'Category has been added')
+        return redirect('items:category_list')
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class=CategoryForm
+    template_name = "category/category_update.html"
+
+    def form_valid(self,form):
+        form.save()
+        messages.success(self.request,'Category has been updated')
+        return redirect('items:update_category', pk=self.object.pk)
+
+def delete_category(request,pk):
+    cat=get_object_or_404(Category,pk=pk)
+
+    if request.method=="POST":
+        cat.delete()
+
+        messages.success(request,'Category has been deleted')
+        return reedirect('items:category_list')
+
+        
+
+def cat_list(request):
+    cat=Category.objects.all()
+    form=CategoryForm()
+
+    context={
+        'cats':cat,
+        'form':form
+    }
+
+    return render(request,'category/category_list.html',context)
+
+
+
+
+def category_detail(request,pk):
+    cat=get_object_or_404(Category,pk=pk)
+    form=CategoryForm()
+
+    context={
+        'cat':cat,
+        'form':form
+
+    }
+
+    return render(request,'category/category_details.html',context)
+
+
+
+
+

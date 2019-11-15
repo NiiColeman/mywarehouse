@@ -3,8 +3,10 @@
 {% load static %}
 
 {% block title %}
-Users | List
+Category | List
 {% endblock title %}
+
+
 
 
 {% block content %}
@@ -14,8 +16,8 @@ Users | List
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-item"><a href="#">Users</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">/ User List</li>
+                    <li class="breadcrumb-item"><a href="#">Category</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">/ Category List</li>
                 </ol>
             </nav>
             {% include 'snippets/messages.html'  %}
@@ -30,23 +32,23 @@ Users | List
                     <div class="card">
                         <div class="card-body">
                             <div class="text text-center">
-                                <h5 class="card-title">Users</h5>
+                                <h5 class="card-title">Category</h5>
                             </div>
                             <hr>
                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target=".bd-example-modal-lg">Add New User</button>
+                                data-target=".bd-example-modal-lg">Add New Category</button>
                             <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
                                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New User</h5>
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New Category</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            {% include 'accounts/signup.html' with form=form %}
+                                            {% include 'category/category_form.html' with form=form %}
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -60,11 +62,10 @@ Users | List
                             <table class="table table-hover" id="table_id">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Email </th>
-                                        <th scope="col">Last Login</th>
-                                        <th scope="col">Date Added</th>
-                                        <td cope="col"> Action</td>
+
+                                        <th scope="col">Name </th>
+
+                                        <th scope="col">Action </th>
 
 
 
@@ -72,17 +73,16 @@ Users | List
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for  user in users %}
+                                    {% for  cat in cats  %}
                                     <tr>
 
 
-                                        <th scope="row">{{user.username}}</th>
+
                                         <td>
-                                            <a href="{% url 'user_detail' pk=user.pk %}">{{user.email}}</a></td>
-                                        <td>{{user.last_login}}</td>
-                                        <td> {{user.date_joined}}</td>
-                                        <td> <a href="{% url 'user_detail' pk=user.pk %}"
-                                                class="btn btn-primary">View</a>
+                                            <a href="{{cat.get_absolute_url}}">{{cat.name}}</a></td>
+
+                                        <td> <a href="{{cat.get_absolute_url}}" class="btn btn-info">View</a></td>
+
 
 
 
@@ -104,3 +104,15 @@ Users | List
 
     </div><!-- Main Wrapper -->
     {% endblock content %}
+
+
+    <!-- {% block javascript %}
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/kt-2.5.1/r-2.2.3/rg-1.1.1/sc-2.0.1/sl-1.3.1/datatables.min.css" />
+
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/kt-2.5.1/r-2.2.3/rg-1.1.1/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+
+
+    
+    {% endblock javascript %} -->
