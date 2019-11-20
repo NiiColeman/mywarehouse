@@ -1,11 +1,14 @@
 from import_export import resources
-from .models import Category,Item,User
+from .models import Category,Item,User,StoreItem
 
 
 
 
-
-class ItemResource(resources.ModelResource):
+class StoreItemResource(resources.ModelResource):
     class Meta:
-        model = Item
-        fields=('user__username')
+        model = StoreItem
+        fileds=('name','quantity')
+    
+
+
+

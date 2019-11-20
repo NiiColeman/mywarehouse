@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders', 'rest_framework', 'invoices', 'import_export', 'django_filters', 'widget_tweaks'
+    'django.contrib.staticfiles', 'items', 'departments', 'crispy_forms', 'orders', 'rest_framework', 'invoices', 'import_export', 'django_filters', 'widget_tweaks','carts'
 ]
 
 MIDDLEWARE = [

@@ -70,3 +70,43 @@ class Item(models.Model):
 
     def get_delete_url(self):
         return reverse("items:item_delete", kwargs={"pk": self.pk})
+
+
+class ItemSetting(models.Model):
+    CHOICES = (
+        (30, ("1 Months")),
+        (60, ("2 Months")),
+        (90, ("3 Months")),
+        (120, ("4 Months"))
+
+    )
+    name = models.CharField(default="Item Settings", max_length=50)
+    low_stock_limit = models.IntegerField(default=10)
+    item_expiration_limit = models.IntegerField(choices=CHOICES, default=30)
+
+    class Meta:
+        verbose_name = ("Item Setting")
+        verbose_name_plural = ("Item Settings")
+
+    def __str__(self):
+        return self.name
+
+
+class StoreItem(models.Model):
+    name = models.CharField(max_length=250)
+    quantity = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    """Model definition for StoreItem."""
+
+    # TODO: Define fields here
+
+    class Meta:
+        """Meta definition for StoreItem."""
+
+        verbose_name = 'StoreItem'
+        verbose_name_plural = 'StoreItems'
+
+    def __str__(self):
+
+        return self.name

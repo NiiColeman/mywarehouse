@@ -4,7 +4,6 @@ from accounts.decorators import wmanager_required, wstaff_required
 from .forms import ItemForm,CategoryForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
-# Create your views here.
 from django.views.generic import UpdateView, DeleteView,CreateView
 from .models import Item, User, Category
 from datetime import datetime, timedelta
@@ -15,6 +14,8 @@ from datetime import datetime
 from django.db.models import Count
 from django.db.models.functions import Trunc
 from django.contrib.auth.decorators import user_passes_test
+from tablib import Dataset
+from .resources import StoreItemResource
 
 @login_required
 def index(request):
@@ -81,9 +82,10 @@ def item_list(request):
 
     context = {
         'items': items,
-        # 'expring_products': expiring_product,
+        
         'expired': expired,
-        'form':form
+        'form':form,
+        
     }
     print(date_me)
     print(expiring_product)
@@ -107,6 +109,10 @@ def item_detail_view(request, pk):
 
     item = get_object_or_404(Item, pk=pk)
     form = ItemForm(request.POST or None, request.FILES or None, instance=item)
+    order_rel=item.order_set.all()
+    print(" order _rel : {}".format(order_rel))
+
+
     context = {
         'item': item,
         'form': form
@@ -224,6 +230,22 @@ def category_detail(request,pk):
     }
 
     return render(request,'category/category_details.html',context)
+
+
+
+def simple_upload(request):
+    if request.method == 'POST':
+        storeitems_resource = storeitemsResource()
+        dataset = Dataset()
+        new_storeitems = request.FILES['myfile']
+
+        imported_data = dataset.load(new_storeitems.read())
+        result = storeitems_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+        if not result.has_errors():
+            storeitems_resource.import_data(dataset, dry_run=False)  # Actually import now
+
+    return render(request, 'snippets/simple_upload.html')
 
 
 

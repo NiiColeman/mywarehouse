@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView,View
 # Create your views here.
 from .models import Order
 from .forms import OrderForm
@@ -9,7 +9,11 @@ from django.contrib import messages
 from invoices.models import Invoice
 import uuid
 from .filters import OrderFilter
-
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.forms.models import model_to_dict
 
 class OrderCreateView(CreateView):
     model = Order
@@ -201,3 +205,92 @@ def search(request):
     }
 
     return render(request, 'orders/search.html', context)
+
+
+
+
+def create_order(request):
+    data=dict()
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            item = Item.objects.get(name=form.instance.item)
+            order_id = generate_random_string(item.name)
+            form.instance.order_id = order_id
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = OrderForm()
+    
+    context={
+        'form':form
+    }
+    data['html_form']=render_to_string('snippets/order_create.html',context,request=request)
+
+    return JsonResponse(data)
+
+
+#     form=OrderForm()
+
+
+
+
+
+#     context={'form':form}
+#     html_form=render_to_string('snippets/order_create.html',context,request=request)
+#     return JsonResponse({'html_form':html_form})
+
+def list_order(request):
+    order=Order.objects.all()
+    context={
+        'orders':order
+    }
+
+    return render(request,'orders/list.html',context)
+
+
+
+def save_order_form(request, form, template_name):
+    data = dict()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+            orders = Order.objects.all()
+            data['html_order_list'] = render_to_string('orders/mylist.html', {
+                'orders': orders
+            })
+        else:
+            data['form_is_valid'] = False
+    context = {'form': form}
+    data['html_form'] = render_to_string(template_name, context, request=request)
+    return JsonResponse(data)
+
+
+
+def order_update(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+    else:
+        form = OrderForm(instance=order)
+    return save_order_form(request, form, 'snippets/myupdate.html')
+
+
+def order_delete(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        order.delete()
+        data['form_is_valid'] = True  # This is just to play along with the existing code
+        orders = Order.objects.all()
+        data['html_order_list'] = render_to_string('orders/mylist.html', {'orders': orders})
+    else:
+        context = {'order': order}
+        data['html_form'] = render_to_string('snippets/delete_order.html',
+            context,
+            request=request,
+        )
+    return JsonResponse(data)

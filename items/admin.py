@@ -1,7 +1,7 @@
 from django.contrib import admin
-
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
-from .models import Category, Item, User
+from .models import Category, Item, User, ItemSetting, StoreItem
 
 
 @admin.register(User)
@@ -16,4 +16,12 @@ class ItemAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(ItemSetting)
+
+
+@admin.register(StoreItem)
+class StoreItemAdmin(ImportExportModelAdmin):
     pass

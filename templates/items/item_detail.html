@@ -15,14 +15,14 @@ Item | Detail
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-item"><a href="#">Items</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'items:item_list' %}">Items</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Item Detals</li>
                 </ol>
             </nav>
-            <h1 class="page-title">Item Details</h1>
+
         </div>
-        <!-- <h6 class="page-desc">A simple jQuery image cropping plugin.</h6>  -->
-        <div class="divider"></div>
+
+
         <div class="row">
             <div class="col-xl">
                 <div class="card">
@@ -141,6 +141,67 @@ Item | Detail
                 </div>
             </div>
         </div>
+
+
+
+        <div class="row">
+            <div class="col-xl">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text text-center">
+                            <h5 class="card-title">RECENT ORDERS</h5>
+                        </div>
+
+
+
+
+
+
+                        <hr>
+                        <table class="table table-hover" id="table_id">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col">Item Ordered </th>
+                                    <th scope="col">Item Quantity</th>
+                                    <th scope="col">Date Ordered</th>
+                                    <th scope="col">Order ID</th>
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in item.order_set.all  %}
+                                <tr>
+
+
+
+                                    <td><a href="{{item.get_absolute_url}}">{{item.item}}</a></td>
+                                    <td><a href="{{item.get_absolute_url}}">{{item.quantity}}</a></td>
+                                    <td><a href="{{item.get_absolute_url}}">{{item.date_of_order}}</a></td>
+                                    <td><a href="http://"></a>{{item.order_id}}</td>
+
+
+
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
     </div>
 </div><!-- Main Wrapper -->
 {% endblock content %}

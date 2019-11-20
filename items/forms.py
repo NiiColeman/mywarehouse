@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category,User,Item
+from .models import Category,User,Item,ItemSetting
 
 
 class DateInput(forms.DateInput):
@@ -24,3 +24,13 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ("name",)
+
+
+
+class ItemSettingForm(forms.Form):
+    """ItemSttingForm definition."""
+
+    # TODO: Define form fields here
+    class Meta:
+        model=ItemSetting
+        fields=("low_stock_limit","item_expiration_limit")

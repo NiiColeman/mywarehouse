@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from accounts.views import ManagerSignUpView, user_list, UserCreateView, UserUpdateView,user_detail_view
+from accounts.views import ManagerSignUpView, user_list, UserCreateView, UserUpdateView, user_detail_view
 from items.views import index
-from .views import ItemChart, chartview
+from .views import ItemChart, chartview, settings_view, settings_update_view
+from carts.views import cart_home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,7 +31,7 @@ urlpatterns = [
          UserCreateView.as_view(), name='add_user'),
     path('accounts/<int:pk>/update/user/',
          UserUpdateView.as_view(), name='update_user'),
-     path('accounts/<int:pk>/details/user/',
+    path('accounts/<int:pk>/details/user/',
          user_detail_view, name='user_detail'),
 
 
@@ -42,6 +43,11 @@ urlpatterns = [
     path("departments/", include("departments.urls")),
     path("api/chart/data/", ItemChart.as_view(), name="api-data"),
     path("chart/", chartview, name="chart"),
+    path("cart", cart_home, name="cart"),
+    path('settings', settings_view, name="settings"),
+    path('settings/<int:pk>/update', settings_update_view, name="settings_update"),
+
+
 
 
 

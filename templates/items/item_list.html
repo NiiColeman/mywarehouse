@@ -57,14 +57,16 @@ Items | List
 
                             <hr>
 
-
-                            <table class="table table-hover" id="table_id">
+                            <div class="table-responsive"></div>
+                            <table class="table" id="table_id">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
+                                        <th scope="col">Image </th>
+
                                         <th scope="col">Name </th>
                                         <th scope="col">Stock On Hand</th>
                                         <th scope="col">Expiry Date</th>
+                                        <th scope="col">Shelf Number</th>
                                         <th scope="col">Actions</th>
 
                                     </tr>
@@ -72,20 +74,30 @@ Items | List
                                 <tbody>
                                     {% for item in items  %}
                                     <tr>
+                                        <td>
+                                            <div class="profile-img">
+                                                <img src="{{item.image.url}}"
+                                                    style="height:45px;width:45px;border-radius:50%;">
+                                            </div>
+                                        </td>
 
 
-                                        <th scope="row">1</th>
                                         <td href="{{item.get_absolute_url}}"> <a
                                                 href="{{item.get_absolute_url}}">{{item.name}}</a></td>
+
+                                        {% if item.stock_on_hand < 10 %}
+
+                                        <td> <span class="badge badge-danger">{{item.stock_on_hand}}</span> </td>
+                                        {% else %}
                                         <td>{{item.stock_on_hand}}</td>
+                                        {% endif %}
+
+
                                         <td>{{item.expiry_date}}</td>
+                                        <td>{{item.shelf_number}}</td>
+
                                         <td>
-
                                             <a href="{{item.get_absolute_url}}" class="btn btn-primary">View</a>
-
-
-
-
                                         </td>
 
 
@@ -98,12 +110,13 @@ Items | List
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
 
-    </div><!-- Main Wrapper -->
-    {% endblock content %}
+
+
+
+
+    </div>
+
+</div><!-- Main Wrapper -->
+{% endblock content %}
