@@ -70,6 +70,9 @@ order | Detail
                                         <h6> Date Ordered: {{order.date_of_order|timesince}} Ago
                                             ({{order.date_of_order}})</h6>
                                         <hr>
+                                        <h6> Made By: {{order.user|title}}</h6>
+                                        <hr>
+
 
 
                                         {% if user.is_superuser %}

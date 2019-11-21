@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-<title>Items | Add Item</title>
+
 
 
 
@@ -47,22 +47,7 @@
                                                 </div>
 
 
-                                                <form action="{% url 'items:item_update' pk=item.pk %}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        {% csrf_token %}
-                                                        {{form|crispy}}
-                                                    </div>
-
-
-
-
-
-                                                    <div class="form-group">
-                                                        <input type="submit" value="Update Item" class="btn btn-info">
-                                                    </div>
-
-                                                </form>
+                                                {% include 'snippets/item_update.html' with form=form item=item %}
 
                                             </div>
                                         </div>

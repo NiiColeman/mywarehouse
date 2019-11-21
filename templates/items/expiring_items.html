@@ -16,8 +16,8 @@ Items | Expiring List
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-item"><a href="#">Items</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">/ Expiring Items</li>
+                    <li class="breadcrumb-item"><a href="{% url 'items:item_list' %}">Items</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Expiring Items</li>
                 </ol>
             </nav>
 
@@ -33,35 +33,19 @@ Items | Expiring List
                             <table class="table table-hover" id="table_id">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Name </th>
                                         <th scope="col">Stock On Hand</th>
                                         <th scope="col">Expiry Date</th>
+                                        <th scope="col">Shelf Number</th>
                                         <th scope="col">Actions</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for item in expiring_products  %}
-                                    <tr>
+                                    {% include 'snippets/item_list.html' with items=expiring_products %}
 
 
-                                        <th scope="row">1</th>
-                                        <td href="{{item.get_absolute_url}}"> <a
-                                                href="{{item.get_absolute_url}}">{{item.name}}</a></td>
-                                        <td>{{item.stock_on_hand}}</td>
-                                        <td>{{item.expiry_date}} | ({{item.expiry_date|timeuntil}})</td>
-                                        <td>
-                                            <a href="{{item.get_absolute_url}}" class="btn btn-primary">View</a>
-
-
-
-                                        </td>
-
-
-
-                                    </tr>
-                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>

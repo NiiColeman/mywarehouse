@@ -39,6 +39,7 @@ class OrderCreateView(CreateView):
             order_id = generate_random_string(item.name)
             form.instance.order_id = order_id
             item.save()
+            form.instance.user=self.request.user
             form.save()
             order = get_order(order_id=order_id)
             invoice_id = invoice_id = generate_invoice_id()

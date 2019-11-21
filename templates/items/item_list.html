@@ -17,7 +17,7 @@ Items | List
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
                     <li class="breadcrumb-item"><a href="#">Items </a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Item List</li>
+
                 </ol>
             </nav>
 
@@ -72,39 +72,15 @@ Items | List
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for item in items  %}
-                                    <tr>
-                                        <td>
-                                            <div class="profile-img">
-                                                <img src="{{item.image.url}}"
-                                                    style="height:45px;width:45px;border-radius:50%;">
-                                            </div>
-                                        </td>
+                                    {% include 'snippets/item_list.html' with item=item %}
 
-
-                                        <td href="{{item.get_absolute_url}}"> <a
-                                                href="{{item.get_absolute_url}}">{{item.name}}</a></td>
-
-                                        {% if item.stock_on_hand < 10 %}
-
-                                        <td> <span class="badge badge-danger">{{item.stock_on_hand}}</span> </td>
-                                        {% else %}
-                                        <td>{{item.stock_on_hand}}</td>
-                                        {% endif %}
-
-
-                                        <td>{{item.expiry_date}}</td>
-                                        <td>{{item.shelf_number}}</td>
-
-                                        <td>
-                                            <a href="{{item.get_absolute_url}}" class="btn btn-primary">View</a>
-                                        </td>
-
-
-
-                                    </tr>
-                                    {% endfor %}
                                 </tbody>
+
+                                <div class="modal fade" id="modal-item">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        </div>item
+                                    </div>
                             </table>
                         </div>
                     </div>
@@ -119,4 +95,62 @@ Items | List
     </div>
 
 </div><!-- Main Wrapper -->
+
+
 {% endblock content %}
+
+{% block extrajs %}
+<script>
+    $(function () {
+
+        /* Functions */
+
+        var loadForm = function () {
+            var btn = $(this);
+            $.ajax({
+                url: btn.attr("data-url"),
+                type: 'get',
+                dataType: 'json',
+                beforeSend: function () {
+                    $("#modal-item").modal("show");
+                },
+                success: function (data) {
+                    $("#modal-item .modal-content").html(data.html_form);
+                }
+            });
+        };
+
+        var saveForm = function () {
+            var form = $(this);
+            $.ajax({
+                url: form.attr("action"),
+                data: form.serialize(),
+                type: form.attr("method"),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.form_is_valid) {
+                        $("#item-table tbody").html(data.html_item_list);
+                        $("#modal-item").modal("hide");
+                    }
+                    else {
+                        $("#modal-item .modal-content").html(data.html_form);
+                    }
+                }
+            });
+            return false;
+        };
+
+
+        /* Binding */
+
+        // Create item
+        $(".js-create-item").click(loadForm);
+        $("#modal-item").on("submit", ".js-item-create-form", saveForm);
+
+        // Update item
+        $("#item-table").on("click", ".js-update-item", loadForm);
+        $("#modal-item").on("submit", ".js-item-update-form", saveForm);
+
+    });
+</script>
+{% endblock extrajs %}

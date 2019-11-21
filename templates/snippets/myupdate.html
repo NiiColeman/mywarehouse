@@ -3,7 +3,7 @@
 <form method="post" action="{% url 'orders:order_updates' form.instance.pk %}" class="js-book-update-form">
     {% csrf_token %}
     <div class="modal-header">
-        <h4 class="modal-title text text-center">New Order</h4>
+        <h4 class="modal-title text text-center">New Update</h4>
 
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -12,8 +12,9 @@
     <div class="modal-body">
         {% include 'snippets/order_form.html' %}
     </div>
+    <input type="submit" value="submit">
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Create Order</button>
+
     </div>
 </form>

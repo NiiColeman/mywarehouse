@@ -13,6 +13,8 @@ from .views import (index, test_perm,
                     delete_category,
                     category_detail,
                     cat_list,
+                    items_update
+
                     )
 
 app_name = 'items'
@@ -35,7 +37,9 @@ urlpatterns = [
     path("category/create", CategoryCreateView.as_view(), name="category_create"),
     path("category/<int:pk>/delete", delete_category, name="category_delete"),
     path("category/list", cat_list, name="category_list"),
-    path("category/<int:pk>/detail", category_detail, name="category_detail")
+    path("category/<int:pk>/detail", category_detail, name="category_detail"),
+    path('item-update/<int:pk>', items_update, name="update"),
+
 
 
 ]
