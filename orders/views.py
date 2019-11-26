@@ -28,7 +28,7 @@ class OrderCreateView(CreateView):
         if item.stock_on_hand < form.instance.quantity:
 
             messages.success(
-                self.request, 'Order cannot be placed, requested itemsare more than the items in your inventory')
+                    request, 'Order cannot be placed, requested items are more than the items in your inventory. Maximum quantity-{} that can be requested'.format(item.stock_on_hand))
             return redirect('orders:list_order')
 
         elif item.stock_on_hand < 1:
@@ -106,7 +106,7 @@ def order_update_view(request, pk):
             if item.stock_on_hand < form.instance.quantity:
 
                 messages.success(
-                    request, 'Order cannot be placed, requested itemsare more than the items in your inventory')
+                    request, 'Order cannot be placed, requested items are more than the items in your inventory. Maximum quantity-{} that can be requested'.format(item.stock_on_hand))
                 return redirect('orders:list_order')
 
             elif item.stock_on_hand < 1:
@@ -212,6 +212,7 @@ def search(request):
 
 def create_order(request):
     data=dict()
+    orders=Order.objects.all()
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -220,13 +221,17 @@ def create_order(request):
             form.instance.order_id = order_id
             form.save()
             data['form_is_valid'] = True
+            data['html_order_list'] = render_to_string('orders/mylist.html', {
+                'orders': orders
+            })
         else:
             data['form_is_valid'] = False
     else:
         form = OrderForm()
     
     context={
-        'form':form
+        'form':form,
+        'orders':orders
     }
     data['html_form']=render_to_string('snippets/order_create.html',context,request=request)
 
@@ -262,6 +267,8 @@ def save_order_form(request, form, template_name):
             orders = Order.objects.all()
             data['html_order_list'] = render_to_string('orders/mylist.html', {
                 'orders': orders
+            #     messages.success(request, "success")
+            # return redirect('orders:list')
             })
         else:
             data['form_is_valid'] = False

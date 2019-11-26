@@ -8,7 +8,8 @@ from django.shortcuts import reverse
 
 class Order(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(
+        Item, related_name="order_set", on_delete=models.CASCADE)
     date_of_order = models.DateField(auto_now=False)
     order_id = models.CharField(unique=True, max_length=50)
     quantity = models.IntegerField(default=1)

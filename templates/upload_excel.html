@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-xl">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">File Browser</h5>
+
+                <form action="{% url 'upload-items' %}" method="POST" enctype="multipart/form-data">
+                    <div class="custom-file">
+                        {% csrf_token %}
+                        <input type="file" class="custom-file-input form-control" name="excel_file" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+
+                    <button type="submit">Upload</button>
+
+                </form>
+
+
+                {% if excell_data %}
+                {% for row in excel_data %}
+                {% for cell in row %}
+                {{ cell }}&nbsp;&nbsp;
+                {% endfor %}
+                <br>
+                {% endfor %}
+
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

@@ -18,12 +18,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import ManagerSignUpView, user_list, UserCreateView, UserUpdateView, user_detail_view, user_update_view
-from items.views import index
-from .views import ItemChart, chartview, settings_view, settings_update_view
+from items.views import index, category_upload
+from .views import ItemChart, chartview, settings_view, settings_update_view,upload_items
 from carts.views import cart_home
+from ajax_select import urls as ajax_select_urls
+
+admin.autodiscover()
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('upload-items',upload_items,name='upload-items'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/manager/',
          ManagerSignUpView.as_view(), name='manager_signup'),
@@ -33,6 +38,7 @@ urlpatterns = [
          user_update_view, name='update_user'),
     path('accounts/<int:pk>/details/user/',
          user_detail_view, name='user_detail'),
+    path('ajax_select/', include(ajax_select_urls)),
 
 
 
@@ -44,7 +50,10 @@ urlpatterns = [
     path("api/chart/data/", ItemChart.as_view(), name="api-data"),
     path("chart/", chartview, name="chart"),
     path("cart", cart_home, name="cart"),
+    path("upload", category_upload, name="upload"),
     path('settings', settings_view, name="settings"),
+    # path('create-item', settings_view, name="create_item"),
+
     path('settings/<int:pk>/update', settings_update_view, name="settings_update"),
 
 

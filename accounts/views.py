@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.views.generic import CreateView, UpdateView
-from .forms import ManagerSignupForm, StaffSignupForm
+from .forms import ManagerSignupForm, UpdateUserForm
 from items.models import User
 from django.contrib import messages
 
@@ -66,7 +66,7 @@ class UserUpdateView(UpdateView):
 
 def user_detail_view(request, pk):
     user = get_object_or_404(User, pk=pk)
-    form = ManagerSignupForm(request.POST or None, instance=user)
+    form = UpdateUserForm(request.POST or None, instance=user)
 
     context = {
         'user': user,
@@ -83,10 +83,10 @@ def user_detail_view(request, pk):
 
 def user_update_view(request, pk):
     user = get_object_or_404(User, pk=pk)
-    form = ManagerSignupForm()
+    form = UpdateUserForm()
 
     if request.method == "POST":
-        form = ManagerSignupForm(request.POST or None, instance=user)
+        form = UpdateUserForm(request.POST or None, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, "User has been successfully updated")

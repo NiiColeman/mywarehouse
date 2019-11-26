@@ -60,7 +60,8 @@ Item | Detail
                                         <h6> Shelf Number: {{item.shelf_number}}</h6>
 
                                         <hr>
-                                        <h6> Added By: {{item.user|title}}</h6>
+                                        <h6> Added By: <a href="{{item.user.get_absolute_url}}">{{item.user|title}}</a>
+                                        </h6>
 
                                         <hr>
 

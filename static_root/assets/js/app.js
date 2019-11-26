@@ -24,14 +24,7 @@ $(function() {
       data: form.serialize(),
       type: form.attr("method"),
       dataType: "json",
-      success: function(data) {
-        if (data.form_is_valid) {
-          $("#modal-book").modal("hide");
-          $("#table_id").html(data.html_book_list);
-        } else {
-          $("#modal-book .modal-content").html(data.html_form);
-        }
-      }
+      success: function(data) {}
     });
     return false;
   };
@@ -40,13 +33,13 @@ $(function() {
 
   // Create book
   $(".js-create-book").click(loadForm);
-  $("#modal-book").on("submit", ".js-book-create-form", saveForm);
+  // $("#modal-book").on("submit", ".js-book-create-form", saveForm);
 
   // Update book
   $("#table_id").on("click", ".js-update-book", loadForm);
-  $("#modal-book").on("submit", ".js-book-update-form", saveForm);
+  // $("#modal-book").on("submit", ".js-book-update-form", saveForm);
 
   // Delete book
   $("#table_id").on("click", ".js-delete-book", loadForm);
-  $("#modal-book").on("submit", ".js-book-delete-form", saveForm);
+  // $("#modal-book").on("submit", ".js-book-delete-form", saveForm);
 });

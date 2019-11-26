@@ -15,6 +15,8 @@ class ItemForm(forms.ModelForm):
  
     class Meta:
         widgets={'expiry_date':DateInput()}
+
+        
         model = Item
         exclude = ('user','expired')
 
@@ -27,7 +29,7 @@ class CategoryForm(forms.ModelForm):
 
 
 
-class ItemSettingForm(forms.Form):
+class ItemSettingForm(forms.ModelForm):
     """ItemSttingForm definition."""
 
     # TODO: Define form fields here

@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 
 
-<form action="{% url 'items:add' %}" method="POST" enctype="multipart/form-data">
+<form method="POST" id="myForm" enctype="multipart/form-data">
     <div class="form-group">
         {% csrf_token %}
         {{form|crispy}}

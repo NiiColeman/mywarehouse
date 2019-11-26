@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from accounts.decorators import wmanager_required, wstaff_required
+from django.template.loader import render_to_string
 from .forms import ItemForm,CategoryForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views.generic import UpdateView, DeleteView,CreateView
-from .models import Item, User, Category
+from .models import Item, User, Category,ItemSetting,StoreItem
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 from .filters import ItemFilter
@@ -15,7 +15,7 @@ from django.db.models import Count
 from django.db.models.functions import Trunc
 from django.contrib.auth.decorators import user_passes_test
 from tablib import Dataset
-from .resources import StoreItemResource
+from .resources import StoreItemResource,CategoryResource
 
 
 @login_required
@@ -38,8 +38,8 @@ def index(request):
 
 
 @login_required
-# @wmanager_required
-@user_passes_test(lambda u: u.is_superuser)
+
+
 
 def test_perm(request):
     form = ItemForm(request.POST or None, request.FILES or None)
@@ -127,8 +127,13 @@ def item_detail_view(request, pk):
 
 @login_required
 def expiring_list(request):
+    sett = ItemSetting.objects.all()[0]
+    # low_limit=sett.low_stock_limit
+    exp_limit=sett.item_expiration_limit
+    # print(exp_limit)
+    # print(low_limit)
     items = Item.objects.all()
-    date_me = datetime.now()+timedelta(60)
+    date_me = datetime.now()+timedelta(exp_limit)
     expiring_product = Item.objects.filter(
         expiry_date__lte=date_me)
     expired = Item.objects.filter(expiry_date__lte=datetime.now())
@@ -168,7 +173,9 @@ def search(request):
 
 
 def low_stock(request):
-    items=Item.objects.filter(stock_on_hand__lte=10)
+    sett = ItemSetting.objects.all()[0]
+    low_limit=sett.low_stock_limit
+    items=Item.objects.filter(stock_on_hand__lte=low_limit)
 
 
     return render(request,'items/low_stock.html',{'items':items})
@@ -240,7 +247,7 @@ def category_detail(request,pk):
 
 def simple_upload(request):
     if request.method == 'POST':
-        storeitems_resource = storeitemsResource()
+        storeitems_resource = StoreItemResource()
         dataset = Dataset()
         new_storeitems = request.FILES['myfile']
 
@@ -255,37 +262,64 @@ def simple_upload(request):
 
 
 
-
-
-
-    
-    
-
-
-
-
-
-def save_item_form(request, form, template_name):
-    data = dict()
+def category_upload(request):
     if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-            items = Item.objects.all()
-            data['html_item_list'] = render_to_string('snippets/item_list.html', {
-                'items': items
-            })
-        else:
-            data['form_is_valid'] = False
-    context = {'form': form}
-    data['html_form'] = render_to_string(template_name, context, request=request)
-    return JsonResponse(data)
+        category_resource = CategoryResource()
+        dataset = Dataset()
+        new_category = request.FILES['myfile']
+
+        imported_data = dataset.load(new_category.read())
+        result = category_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+        if not result.has_errors():
+            category_resource.import_data(dataset, dry_run=False)  # Actually import now
+
+    return render(request, 'snippets/simple_upload.html')
 
 
-def items_update(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    if request.method == 'POST':
-        form = ItemForm(request.POST, instance=item)
+
+
+
+
+
+def item_page(request):
+    form=ItemForm()
+
+    context={
+        'form':form
+
+    }
+
+    return render(request,'items/add_items.html',context)
+    
+
+
+
+
+def post_item(request):
+    if request.method=="POST" and request.is_ajax():
+        form=ItemForm(request.POST or None , request.FILES or None)
+        user=request.user
+        print(user)
+
+        
+      
+        form.instance.user=user
+        form.save()
+
+        return JsonResponse({'success':True},status=200)
+
+        
+    
+    return JsonResponse({'success':False},status=400)
+
+
+def get_category(value):
+    qs=Category.objects.filter(name=value)
+    if qs:
+        return qs[0]
     else:
-        form = ItemForm(instance=item)
-    return save_item_form(request, form, 'snippets/item_update.html')
+        
+        qs=Category.objects.create(name=value)
+        return qs[0]
+    

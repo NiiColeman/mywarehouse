@@ -65,6 +65,7 @@
                                                     enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         {% csrf_token %}
+                                                        {{ form.media }}
                                                         {{form|crispy}}
                                                     </div>
 
