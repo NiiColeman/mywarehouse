@@ -129,10 +129,16 @@ def upload_items(request):
         for i in excel_data:
             if i[1] == "category" or i[1] == "None":
                 print('skip')
-            elif not get_item(i[0]):
+            else:
                 print("skipping {}".format(i[0]))
                 cat=get_category(i[1])
-                item=Item.objects.create(user=request.user, name=i[0], category=cat, expiry_date=i[2], stock_on_hand=i[3])
+                my_date=i[2]
+                user=request.user
+                # item_value=get_
+                
+                get_item(user,i[0],cat,i[2],i[3],i[4],perishable(i[5]),i[6])
+                
+                # item,created=Item.objects.update_or_create()
                 
                 print(i)
 
@@ -152,9 +158,27 @@ def get_category(value):
         return qs[0]
 
 
-def get_item(value):
+def get_item(user,name,category,expiry_date,stock_on_hand,shelf_number,perishable,description):
     try:
-        qs = Item.objects.filter(name=value)
-        return qs
-    except:
-        return None
+
+        obj = Item.objects.filter(name=name)
+        obj=obj[0]
+        obj.user=user
+        obj.category =category
+        obj.expiry_date=expiry_date
+        obj.stock_on_hand=stock_on_hand
+        obj.shelf_number=shelf_number
+        obj.perishable=perishable
+        obj.description=description
+        obj.save()
+    except Item.DoesNotExist:
+        obj = Item.objects.create(user=user, name=name, category=category, expiry_date=expiry_date, stock_on_hand=stock_on_hand, shelf_number=shelf_number,perishable=perishable,description=description)
+
+
+def perishable(value):
+    if value=="yes" or value=="Yes":
+        return True
+    else:
+        return False
+        
+        

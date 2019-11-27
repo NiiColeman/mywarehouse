@@ -1,8 +1,16 @@
+{% load static %}
 {% for item in items  %}
 <tr>
     <td>
         <div class="profile-img">
+
+            {% if item.image %}
             <img src="{{item.image.url}}" style="height:45px;width:45px;border-radius:50%;">
+            {% else %}
+            <img src="{% static './assets/images/no_image.jpg' %}" style="height:45px;width:45px;border-radius:50%;">
+            {% endif %}
+
+
         </div>
     </td>
 

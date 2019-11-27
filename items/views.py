@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
-from .forms import ItemForm,CategoryForm
+from .forms import ItemForm,CategoryForm,MoveToFormShelf,ShelfItemForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views.generic import UpdateView, DeleteView,CreateView
-from .models import Item, User, Category,ItemSetting,StoreItem
+from .models import Item, User, Category,ItemSetting,ShelfItem
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 from .filters import ItemFilter
@@ -15,7 +15,7 @@ from django.db.models import Count
 from django.db.models.functions import Trunc
 from django.contrib.auth.decorators import user_passes_test
 from tablib import Dataset
-from .resources import StoreItemResource,CategoryResource
+from .resources import CategoryResource
 
 
 @login_required
@@ -245,19 +245,19 @@ def category_detail(request,pk):
 
 
 
-def simple_upload(request):
-    if request.method == 'POST':
-        storeitems_resource = StoreItemResource()
-        dataset = Dataset()
-        new_storeitems = request.FILES['myfile']
+# def simple_upload(request):
+#     if request.method == 'POST':
+#         storeitems_resource = StoreItemResource()
+#         dataset = Dataset()
+#         new_storeitems = request.FILES['myfile']
 
-        imported_data = dataset.load(new_storeitems.read())
-        result = storeitems_resource.import_data(dataset, dry_run=True)  # Test the data import
+#         imported_data = dataset.load(new_storeitems.read())
+#         result = storeitems_resource.import_data(dataset, dry_run=True)  # Test the data import
 
-        if not result.has_errors():
-            storeitems_resource.import_data(dataset, dry_run=False)  # Actually import now
+#         if not result.has_errors():
+#             storeitems_resource.import_data(dataset, dry_run=False)  # Actually import now
 
-    return render(request, 'snippets/simple_upload.html')
+#     return render(request, 'snippets/simple_upload.html')
 
 
 
@@ -323,3 +323,84 @@ def get_category(value):
         qs=Category.objects.create(name=value)
         return qs[0]
     
+
+
+def shelf_list(request):
+    shelfs=ShelfItem.objects.all()
+    context={
+        'shelfs':shelfs
+
+    }
+
+    return render(request,'shelf/shelfs.html',context)
+
+
+def add_to_shelf(request):
+    form=ShelfItemForm()
+
+    if request.method=="POST":
+        form=ShelfItemForm(request.POST or None)
+        if form.is_valid():
+            form.instance.user=request.user
+            item=Item.objects.get(name=form.instance.item)
+
+           
+            
+            if item.stock_on_hand < form.instance.quantity:
+                
+                messages.success(request,"Error! Maximum quantiy that can be moved to the shelf is {}".format(item.stock_on_hand))
+
+                return redirect('/')
+            elif item.stock_on_hand < 5:
+                messages.success(request, 'Item is low on stock, only {} remaining'.format(item.stock_on_hand))
+                return redirect('orders:list_order')
+            else:
+                print('good')
+                shelf=shelf_items(form.instance.item)
+                if shelf:
+                    shelf.quantity=shelf.quantity + form.instance.quantity
+                    shelf.shelf=form.instance.shelf
+                    shelf.save()
+                    item.stock_on_hand=item.stock_on_hand-form.instance.quantity
+                    item.save()
+                    messages.success(request,'I{} has been updated successfully'.format(form.instance.item))
+                    return redirect('/')
+                else:
+                    item.stock_on_hand=item.stock_on_hand-form.instance.quantity
+                    item.save()
+                    form.save()
+                    messages.success(request,'I{} has been added successfully'.format(form.instance.item))
+                    return redirect('/')
+                
+
+                
+        else:
+            form=ShelfItemForm()
+
+    
+    context={
+        'form':form
+    }
+    return render(request,'shelf/add_to_shelf.html',context)
+        
+
+
+        
+
+
+        
+
+def shelf_items(value):
+    try:
+        qs=ShelfItem.objects.filter(item=value)
+        return qs[0]
+    except:
+        return None
+        
+    
+
+
+            
+        
+
+     

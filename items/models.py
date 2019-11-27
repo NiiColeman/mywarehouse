@@ -118,9 +118,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+
     def get_absolute_url(self):
         return reverse("user_detail", kwargs={"pk": self.pk})
-    
+
 
 class Category(models.Model):
     name = models.CharField(max_length=250)
@@ -149,17 +150,18 @@ class Category(models.Model):
 
 class Item(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='images/',null=True,blank=True)
+    name = models.CharField(max_length=250, unique=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
     category = models.ForeignKey(
         Category, related_name='categories', on_delete=models.CASCADE)
     stock_on_hand = models.IntegerField(default=0)
-    expiry_date = models.DateField(auto_now=False)
+    expiry_date = models.DateTimeField(auto_now=False)
     shelf_number = models.CharField(max_length=50)
     description = models.CharField(max_length=450)
     perishable = models.BooleanField(default=False)
     expired = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now=True)
+    shelved = models.BooleanField(default=False)
 
     # TODO: Define fields here
 
@@ -203,24 +205,33 @@ class ItemSetting(models.Model):
         return self.name
 
 
-class StoreItem(models.Model):
-    name = models.CharField(max_length=250)
-    quantity = models.CharField(max_length=50)
-    timestamp = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True)
-
-    """Model definition for StoreItem."""
+class ShelfItem(models.Model):
+    """Model definition for ShelfItem."""
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+    date_add = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shelf = models.CharField(max_length=50)
 
     # TODO: Define fields here
 
     class Meta:
-        """Meta definition for StoreItem."""
+        """Meta definition for ShelfItem."""
 
-        verbose_name = 'StoreItem'
-        verbose_name_plural = 'StoreItems'
+        verbose_name = 'Shelf Item'
+        verbose_name_plural = 'Shelf Items'
 
     def __str__(self):
+        """Unicode representation of ShelfItem."""
+        return self.item.name
 
-        return self.name
+    def get_absolute_url(self):
+        return reverse("items:shelf_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse("items:shelf_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("items:shelf_delete", kwargs={"pk": self.pk})
+
+    # TODO: Define custom methods here

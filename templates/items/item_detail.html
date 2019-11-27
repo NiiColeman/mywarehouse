@@ -32,8 +32,16 @@ Item | Detail
                                 <div class="card">
                                     <div class="card-body">
 
+                                        {% if item.image %}
                                         <img id="zoom_02" src="{{item.image.url}}" data-zoom-image="{{item.image.url}}"
                                             style="width: 100%;" alt="" />
+
+                                        {% else %}
+                                        <img id="zoom_02" src="{% static './assets/images/no_image.jpg' %}"
+                                            data-zoom-image="{% static './assets/images/no_image.jpg' %}" {% endif %}"
+                                            style="width: 100%;" alt="" />
+
+
                                     </div>
                                 </div>
                             </div>
