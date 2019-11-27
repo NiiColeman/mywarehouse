@@ -23,8 +23,8 @@
                             <form method="get" class="form-group">
                                 <div class="row">
                                     <div class="form-group col-sm-4 col-md-3">
-                                        {{ filter.form.item.label_tag }}
-                                        {% render_field filter.form.item class="form-control" %}
+                                        {{ filter.form.shelf.label_tag }}
+                                        {% render_field filter.form.shelf class="form-control" %}
                                     </div>
                                     <div class="form-group col-sm-4 col-md-3">
                                         {{ filter.form.department.label_tag }}
@@ -93,7 +93,7 @@
 
                                                         <th scope="row">1</th>
                                                         <td> <a
-                                                                href="{{order.item.get_absolute_url}}">{{order.item.name}}</a>
+                                                                href="{{order.item.get_absolute_url}}">{{order.shelf.item.name}}</a>
                                                         </td>
                                                         <td> <a href=" {{order.department.get_absolute_url}}"></a>
                                                             {{order.department.department_name}}</td>

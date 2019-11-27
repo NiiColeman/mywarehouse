@@ -3,16 +3,16 @@ from items.models import Item
 from departments.models import Department
 
 
-@register('items')
-class ItemLookup(LookupChannel):
+# @register('items')
+# class ItemLookup(LookupChannel):
 
-    model = Item
+#     model = Item
 
-    def get_query(self, q, request):
-        return self.model.objects.filter(name__icontains=q).order_by('name')[:50]
+#     def get_query(self, q, request):
+#         return self.model.objects.filter(name__icontains=q).order_by('name')[:50]
 
-    def format_item_display(self, item):
-        return u"<span class='item'>%s</span>" % item.name
+#     def format_item_display(self, item):
+#         return u"<span class='item'>%s</span>" % item.name
 
 
 @register('departments')

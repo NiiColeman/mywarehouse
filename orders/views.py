@@ -3,7 +3,7 @@ from django.views.generic import CreateView, ListView, UpdateView,View
 # Create your views here.
 from .models import Order
 from .forms import OrderForm
-from items.models import Item
+from items.models import Item,ShelfItem
 from departments.models import Department
 from django.contrib import messages
 from invoices.models import Invoice
@@ -22,23 +22,23 @@ class OrderCreateView(CreateView):
 
     def form_valid(self, form):
 
-        item = Item.objects.get(name=form.instance.item)
-        item.stock_on_hand = item.stock_on_hand-form.instance.quantity
+        shelf = ShelfItem.objects.get(item__name=form.instance.shelf)
+        shelf.quantity = shelf.quantity-form.instance.quantity
 
-        if item.stock_on_hand < form.instance.quantity:
+        if shelf.quantity < form.instance.quantity:
 
             messages.success(
-                    request, 'Order cannot be placed, requested items are more than the items in your inventory. Maximum quantity-{} that can be requested'.format(item.stock_on_hand))
+                    self.request, 'Order cannot be placed, requested items are more than the items in your inventory. Maximum quantity-{} that can be requested'.format(shelf.quantity))
             return redirect('orders:list_order')
 
-        elif item.stock_on_hand < 1:
+        elif shelf.quantity < 1:
             messages.success(self.request, 'Item is low on stock')
             return redirect('orders:list_order')
 
         else:
-            order_id = generate_random_string(item.name)
+            order_id = generate_random_string(shelf.item.name)
             form.instance.order_id = order_id
-            item.save()
+            shelf.save()
             form.instance.user=self.request.user
             form.save()
             order = get_order(order_id=order_id)
@@ -101,15 +101,15 @@ def order_update_view(request, pk):
         form = OrderForm(request.POST or None, instance=order)
 
         if form.is_valid():
-            item = Item.objects.get(name=form.instance.item)
+            shelf = ShelfItem.objects.get(item__name=form.instance.shelf)
 
-            if item.stock_on_hand < form.instance.quantity:
+            if shelf.quantity < form.instance.quantity:
 
                 messages.success(
-                    request, 'Order cannot be placed, requested items are more than the items in your inventory. Maximum quantity-{} that can be requested'.format(item.stock_on_hand))
+                    request, 'Order cannot be placed, requested items are more than the items in your inventory. Maximum quantity-{} that can be requested'.format(shelf.quantity))
                 return redirect('orders:list_order')
 
-            elif item.stock_on_hand < 1:
+            elif shelf.quantity < 1:
                 messages.success(request, 'Item is low on stock')
                 return redirect('orders:list_order')
 
@@ -118,13 +118,13 @@ def order_update_view(request, pk):
 
                 if form.instance.quantity < old_order.quantity:
                     newq = old_order.quantity-form.instance.quantity
-                    print('item stock on hand : {}'.format(item.stock_on_hand))
-                    item.stock_on_hand = item.stock_on_hand + newq
-                    print('item stock on hand : {}'.format(item.stock_on_hand))
+                    print('item stock on hand : {}'.format(shelf.quantity))
+                    shelf.quantity = shelf.quantity + newq
+                    # print('item stock on hand : {}'.format(shelf.quantity))
 
-                    item.save()
+                    shelf.save()
                     form.save()
-                    print('ew q : {}'.format(newq))
+                    # print('ew q : {}'.format(newq))
 
                     messages.success(request, 'Order Has Been Updated')
                     return redirect("orders:list_order")
@@ -135,8 +135,8 @@ def order_update_view(request, pk):
                     print("new quantity :{}".format(new_order.quantity))
 
                     newq = form.instance.quantity-old_order.quantity
-                    item.stock_on_hand = item.stock_on_hand - newq
-                    item.save()
+                    shelf.quantity = shelf.quantity - newq
+                    shelf.save()
                     form.save()
 
                     messages.success(request, "Order has Been Updated")

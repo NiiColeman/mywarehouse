@@ -15,7 +15,8 @@ from .views import (index, test_perm,
                     cat_list,
                     item_page,
                     post_item,
-                    add_to_shelf
+                    add_to_shelf,
+                    shelf_list, shelf_detail, update_shelf, delete_shelf, upload_excel
 
 
                     )
@@ -27,7 +28,17 @@ urlpatterns = [
     path('add', test_perm, name='add'),
     path('add-item', item_page, name='add-item'),
     path('post-item', post_item, name="post-item"),
+    path('upload-items', upload_excel, name="upload_items"),
     path("shelf/add-to-shelf", add_to_shelf, name="add_shelf"),
+    path("shelf/list", shelf_list, name="shelf_list"),
+    path("shelf/<int:pk>/detail", shelf_detail, name="shelf_detail"),
+    path("shelf/<int:pk>/update", update_shelf, name="shelf_update"),
+    path("shelf/<int:pk>/delete", delete_shelf, name="shelf_delete"),
+
+
+
+
+
 
 
 

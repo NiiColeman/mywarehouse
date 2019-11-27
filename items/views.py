@@ -16,6 +16,8 @@ from django.db.models.functions import Trunc
 from django.contrib.auth.decorators import user_passes_test
 from tablib import Dataset
 from .resources import CategoryResource
+import openpyxl
+
 
 
 @login_required
@@ -332,7 +334,7 @@ def shelf_list(request):
 
     }
 
-    return render(request,'shelf/shelfs.html',context)
+    return render(request,'shelf/shelf_list.html',context)
 
 
 def add_to_shelf(request):
@@ -386,7 +388,18 @@ def add_to_shelf(request):
 
 
         
+def shelf_detail(request,pk):
 
+    shelf=get_object_or_404(ShelfItem,pk=pk)
+    form=ShelfItemForm(request.POST or None, instance=shelf)
+
+
+    context={
+        'shelf':shelf,
+        'form':form
+    }
+
+    return render(request,"shelf/shelf_detail.html",context)
 
         
 
@@ -397,7 +410,172 @@ def shelf_items(value):
     except:
         return None
         
+
+
+
+def update_shelf(request,pk):
+    shelf_item=get_object_or_404(ShelfItem,pk=pk)
+ 
+    if request.method=="POST":
+        form=ShelfItemForm(request.POST or None, instance=shelf_item)
+
+        if form.is_valid():
+            form.instance.user=request.user
+            item=Item.objects.get(name=form.instance.item)
+
+            if item.stock_on_hand < form.instance.quantity:
+                
+                messages.success(request,"Error! Maximum quantiy that can be moved to the shelf is {}".format(item.stock_on_hand))
+
+                return redirect('items:shelf_list')
+            elif item.stock_on_hand < 5:
+                messages.success(request, 'Item is low on stock, only {} remaining'.format(item.stock_on_hand))
+                return redirect('items:shelf_list')
+            else:
+                print('good')
+                shelf=shelf_items(form.instance.item)
+                if shelf:
+                    shelf.quantity=shelf.quantity + form.instance.quantity
+                    shelf.shelf=form.instance.shelf
+                    shelf.save()
+                    item.stock_on_hand=item.stock_on_hand-form.instance.quantity
+                    item.save()
+                    messages.success(request,'I{} has been updated successfully'.format(form.instance.item))
+                    return redirect('items:shelf_list')
+                else:
+                    item.stock_on_hand=item.stock_on_hand-form.instance.quantity
+                    item.save()
+                    form.save()
+                    messages.success(request,'I{} has been added successfully'.format(form.instance.item))
+                    return redirect('items:shelf_list')
+                
+
+                
+    else:
+        form=ShelfItemForm()
+    context={
+        'form':form
+        
+    }
+
+    return render(request,'shelf/update_form.html',context)
+
+
+
+
+
+
+
+def delete_shelf(request,pk):
+    shelf=get_objevt_or_404(ShelfItem,pk=pk)
+
+    if request.method=="POST":
+        item=Item.objects.get(name=shelf)
+        item.stock_on_hand=item.stock_on_hand+shelf.quantity
+        item.save()
+        shelf.delete()
+        messages.success(request,"item has been removed from shelf")
+
+        return redirect('items:shelf_list')
+
+
+  
+
+
+
+def upload_excel(request):
+
+    if request.method == "POST":
+        try:
+            
+            excel_file = request.FILES["excel_file"]
+        
+
+        # you may put validations here to check extension or file size
+
+            wb = openpyxl.load_workbook(excel_file)
+
+        # getting a particular sheet by name out of many sheets
+            worksheet = wb["Sheet1"]
+        # print(worksheet)
+
+            excel_data = list()
+        # iterating over the rows and
+        # getting value from each cell in row
+            for row in worksheet.iter_rows():
+                row_data = list()
+                for cell in row:
+                    row_data.append(str(cell.value))
+                # print(row_data)
+                excel_data.append(row_data)
+
+            for i in excel_data:
+                if i[0] == "item" or i[0] == "None":
+
+                    print('skip')
+                else:
+                    item=Item.objects.get(name=i[0])
+                
+                
+                    if item.stock_on_hand < int(i[2]):
+                        messages.success(request,"{} item on hand is too low. Only {} available".format(item.name,item.stock_on_hand))
+                        print('no')
+                    elif item.stock_on_hand < 5:
+                        messages.success(request,"{} has only  {} available. Please restock".format(item.name,item.stock_on_hand))
+                    
+                    else:
+                        get_item(i[0],int(i[2]),request.user,i[1])
+                        messages.success(request,'items have been moved to shelf')
+                        return redirect('items:shelf_list')
+                
+            return render(request, 'shelf/upload_excel.html', {"excel_data": excel_data})
+        except:
+            messages.success(request,"choose a file to upload")
+            return redirect('items:shelf_list')
+            
+        
+
+    else:
+        return render(request, 'shelf/upload_excel.html')
+        
+   
+
+
+
+
+
+
+        
+
     
+
+
+def get_item(item,quantity,user,shelf):
+    try:
+
+        obj = ShelfItem.objects.get(item__name=item)
+        
+        obj.user=user
+        obj.quantity=obj.quantity+quantity
+        obj.shelf=shelf
+        
+        
+        
+        obj.shelf=shelf
+        item=Item.objects.get(name=item)
+        item.stock_on_hand=item.stock_on_hand-quantity
+        
+        
+        obj.save()
+    except ShelfItem.DoesNotExist:
+        item=Item.objects.get(name=item)
+        obj = ShelfItem.objects.create(user=user, item=item,shelf=shelf,quantity=quantity)
+        
+        item.stock_on_hand=item.stock_on_hand-obj.quantity
+
+        
+
+
 
 
             

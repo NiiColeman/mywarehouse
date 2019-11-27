@@ -15,8 +15,10 @@ order | Detail
         <div class="content-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style-1">
-                    <li class="breadcrumb-order"><a href="#">Orders</a></li>
-                    <li class="breadcrumb-order active" aria-current="page"> / Order Details</li>
+                    <!-- <li class="breadcrumb-order"><a href="#">Orders</a></li>
+                     -->
+                    <li class="breadcrumb-item"><a href="{% url 'orders:list_order' %}">Orders</a></li>
+                    <li class="breadcrumb-order active" aria-current="page">Order Details</li>
                 </ol>
             </nav>
 
@@ -32,8 +34,9 @@ order | Detail
                                 <div class="card">
                                     <div class="card-body">
 
-                                        <img id="zoom_02" src="{{order.item.image.url}}"
-                                            data-zoom-image="{{order.item.image.url}}" style="width: 100%;" alt="" />
+                                        <img id="zoom_02" src="{{order.shelf.item.image.url}}"
+                                            data-zoom-image="{{order.shelf.item.image.url}}" style="width: 100%;"
+                                            alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -44,12 +47,12 @@ order | Detail
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text text-center">
-                                            <h2 class="card-title">{{order.item.name|title}}</h2>
+                                            <h2 class="card-title">{{order.shelf.item|title}}</h2>
                                             <hr>
 
                                         </div>
                                         <h6>Item: <a data-toggle="modal"
-                                                data-target="#exampleModalCenter">{{order.item.name}}</a></h6>
+                                                data-target="#exampleModalCenter">{{order.shelf.item}}</a></h6>
                                         <hr>
                                         <!-- Modal -->
 
@@ -183,19 +186,19 @@ order | Detail
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Description:{{order.item.description|title}}
+                                                        Description:{{order.shelf.item.description|title}}
                                                         <hr>
-                                                        Expiry Date:{{order.item.expiry_date}} -
-                                                        {{order.item.expiry_date|timeuntil}}
+                                                        Expiry Date:{{order.shelf.item.expiry_date}} -
+                                                        {{order.shelf.item.expiry_date|timeuntil}}
                                                         <hr>
-                                                        Stock On Hand :{{order.item.stock_on_hand}}
+                                                        Stock On Hand :{{order.shelf.item.stock_on_hand}}
                                                         <hr>
-                                                        Added by:{{order.item.user|title}}
+                                                        Added by:{{order.shelf.item.user|title}}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Close</button>
-                                                        <a href="{{order.item.get_absolute_url}}"
+                                                        <a href="{{order.shelf.item.get_absolute_url}}"
                                                             class="btn btn-info">View More</a>
                                                     </div>
                                                 </div>
