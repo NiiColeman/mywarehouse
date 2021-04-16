@@ -1,0 +1,10 @@
+<form action="{% url 'upload-items' %}" method="POST" enctype="multipart/form-data">
+    <div class="custom-file">
+        {% csrf_token %}
+        <input type="file" class="custom-file-input form-control" name="excel_file" id="customFile">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+    </div>
+
+    <button type="submit" class="btn btn-info">Upload</button>
+
+</form>

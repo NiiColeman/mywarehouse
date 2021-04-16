@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- {% load crispy_forms_tags %} -->
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Search</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Orders</li>
+                </ol>
+            </nav>
+
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <form method="get" class="form-group">
+                                <div class="row">
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.shelf.label_tag }}
+                                        {% render_field filter.form.shelf class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.department.label_tag }}
+                                        {% render_field filter.form.department class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.quantity.label_tag }}
+                                        {% render_field filter.form.quantity class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.quantity__gt.label_tag }}
+                                        {% render_field filter.form.quantity__gt class="form-control" %}
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.quantity__lt.label_tag }}
+                                        {% render_field filter.form.quantity__lt class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.date_of_order.label_tag }}
+                                        {% render_field filter.form.date_of_order class="form-control" type="date" %}
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        {{ filter.form.year_of_order.label_tag }}
+                                        {% render_field filter.form.year_of_order class="form-control" %}
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                            <hr>
+
+
+                            <div class="row">
+                                <div class="col-xl">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text text-center">
+                                                <h5 class="card-title">Orders</h5>
+                                            </div>
+
+
+
+                                            <table class="table table-hover" id="table_id">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item </th>
+                                                        <th scope="col">Department</th>
+                                                        <th scope="col">Date of Order</th>
+                                                        <th scope="col">Quantity</th>
+
+                                                        <th scope="col">Actions</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for order in filter.qs  %}
+                                                    <tr>
+
+
+                                                        <th scope="row">1</th>
+                                                        <td> <a
+                                                                href="{{order.item.get_absolute_url}}">{{order.shelf.item.name}}</a>
+                                                        </td>
+                                                        <td> <a href=" {{order.department.get_absolute_url}}"></a>
+                                                            {{order.department.department_name}}</td>
+                                                        <td>{{order.date_of_order}}</td>
+                                                        <td>{{order.quantity}}</td>
+
+                                                        <td>
+
+                                                            <a href=" {{order.get_absolute_url}}"
+                                                                class="btn btn-warning">View</a>
+
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+    {% endblock content %}

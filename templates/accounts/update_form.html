@@ -1,0 +1,17 @@
+{% load crispy_forms_tags %}
+
+
+
+<form action="{% url 'update_user' pk=user.pk %}" method="POST" vclass="form-group">
+
+
+
+    {% csrf_token %}
+    <div class="form-control">{{form|crispy}}</div>
+
+
+    <br>
+    <input class="btn btn-info" type="submit" value="Update">
+
+
+</form>

@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Users| User Details
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Users</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">/ User List</li>
+                </ol>
+            </nav>
+            {% include 'snippets/messages.html'  %}
+
+
+
+
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">User Details</h5>
+
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h4> Username : {{user.username|title}} </h4>
+                                </li>
+                                <li class="list-group-item">
+                                    <h4> Full Name : {{user.first_name}} {{user.last_name}}</h4>
+                                </li>
+                                <li class="list-group-item">
+                                    <h4> Email : {{user.email}}</h4>
+                                </li>
+
+
+                                {% if user.is_superuser %}
+                                <li class="list-group-item">
+                                    <h4> Admin Status :Yes</h4>
+                                </li>
+                                {% else %}
+                                <li class="list-group-item">
+                                    <h4> Admin Status : No</h4>
+                                </li>
+                                {% endif %}
+
+                                {% if user.is_active %}
+                                <li class="list-group-item">
+                                    <h4> Active Status :Yes</h4>
+                                </li>
+                                {% else %}
+                                <li class="list-group-item">
+                                    <h4> Active Status : No</h4>
+                                </li>
+                                {% endif %}
+
+                                <li class="list-group-item">
+                                    <h4> Last Login :
+                                        {{user.last_login|timesince}} Ago | ({{user.last_login}})</h4>
+                                </li>
+                                <li class="list-group-item">
+                                    <h4> Date Joined : {{user.date_joined}}</h4>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <h4>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg">Edit User</button>
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle">Edit
+                                                            User</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {% include 'accounts/update_form.html' with  user=user form=form %}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                            data-target="#exampleModal">
+                                            Delete User
+                                        </button>
+
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are You Sure You Want To Delete <b>{{user.username}} ?
+                                                        </b> All Orders
+                                                        Associated With This Department Will Be Deleted
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <a href="{{dept.get_delete_url}}"
+                                                            class="btn btn-danger">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="card">
+                        <div class="card-body">
+
+
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne" data-toggle="collapse"
+                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <h5 class="card-title text-center">Items Added By {{user.username}}
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample">
+
+
+                                        <div class="card-body">
+
+
+
+                                            <div class="table-responsive"></div>
+                                            <table class="table table-hover" id="table_id">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Image </th>
+
+                                                        <th scope="col">Name </th>
+                                                        <th scope="col">Stock On Hand</th>
+                                                        <th scope="col">Expiry Date</th>
+                                                        <th scope="col">Shelf Number</th>
+                                                        <th scope="col">Actions</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% include 'snippets/item_list.html' with items=user.item_set.all %}
+
+                                                </tbody>
+
+                                                <div class="modal fade" id="modal-item">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                        </div>
+                                                    </div>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo" data-toggle="collapse"
+                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <h5 class="card-title text-center">Orders Made By {{user.username}}
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+
+                                            <table class="table table-hover" id="table_id">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th scope="col"> Item Name </th>
+                                                        <th scope="col">Quantity</th>
+                                                        <th scope="col">Department </th>
+                                                        <th scope="col">Order Date</th>
+                                                        <th scope="col">Action</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for order in user.order_set.all  %}
+                                                    <tr>
+
+
+
+                                                        <td> <a href="{{order.get_absolute_url}}">{{order.item}}</a>
+                                                        </td>
+                                                        <td>{{order.quantity}}</td>
+                                                        <td>{{order.department}}</td>
+                                                        <td>
+                                                            <a href="{{order.get_absolute_url}}">{{order.date_of_order}}
+                                                                |
+                                                                ({{order.date_of_order|timesince}})</a>
+
+                                                        </td>
+                                                        <td><a href="{{order.get_absolute_url}}"
+                                                                class="btn btn-primary">View</a> </td>
+
+
+
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+
+
+
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

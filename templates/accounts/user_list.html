@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Users | List
+{% endblock title %}
+
+
+{% block content %}
+<!-- Page Inner -->
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="#">Users</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">/ User List</li>
+                </ol>
+            </nav>
+            {% include 'snippets/messages.html'  %}
+
+
+
+
+
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text text-center">
+                                <h5 class="card-title">Users</h5>
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target=".bd-example-modal-lg">Add New User</button>
+                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New User</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% include 'accounts/signup.html' with form=form %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-hover" id="table_id">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email </th>
+                                        <th scope="col">Last Login</th>
+                                        <th scope="col">Date Added</th>
+                                        <td cope="col"> Action</td>
+
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for  user in users %}
+                                    <tr>
+
+
+                                        <th scope="row">{{user.username}}</th>
+                                        <td>
+                                            <a href="{% url 'user_detail' pk=user.pk %}">{{user.email}}</a></td>
+                                        <td>{{user.last_login}}</td>
+                                        <td> {{user.date_joined}}</td>
+                                        <td> <a href="{% url 'user_detail' pk=user.pk %}"
+                                                class="btn btn-primary">View</a>
+
+
+
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div><!-- Main Wrapper -->
+    {% endblock content %}

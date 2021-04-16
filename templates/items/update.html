@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+
+
+{% block content %}
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="{% url items:item_list %}">Items</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update</li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-9">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="row">
+                                    <div class="col-xl">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="text text-center">
+                                                    <h5 class="card-title">Form controls</h5>
+                                                </div>
+
+
+                                                {% include 'snippets/item_update.html' with form=form item=item %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
+
+    {% endblock content %}

@@ -1,0 +1,50 @@
+{% load static %}
+{% for item in items  %}
+<tr>
+    <td>
+        <div class="profile-img">
+
+            {% if item.image %}
+            <img src="{{item.image.url}}" style="height:45px;width:45px;border-radius:50%;">
+            {% else %}
+            <img src="{% static './assets/images/no_image.jpg' %}" style="height:45px;width:45px;border-radius:50%;">
+            {% endif %}
+
+
+        </div>
+    </td>
+
+
+    <td href="{{item.get_absolute_url}}"> <a href="{{item.get_absolute_url}}">{{item.name}}</a></td>
+
+    {% if item.stock_on_hand <= 10 %}
+
+    <td> <span class="badge badge-danger">{{item.stock_on_hand}} LOW STOCK</span>
+    </td>
+    {% else %}
+    <td>{{item.stock_on_hand}}</td>
+    {% endif %}
+
+
+
+    <td>{{item.expiry_date}}({{item.expiry_date|timeuntil}})</td>
+
+
+
+    <td>{{item.shelf_number}}</td>
+
+    <td>
+        <a href="{{item.get_absolute_url}}" class="btn btn-primary">View</a>
+
+        <button type="button" class="btn btn-primary js-update-item">
+            <span class="glyphicon glyphicon-plus"></span>
+            Edit
+        </button>
+
+
+
+
+
+</tr>
+
+{% endfor %}

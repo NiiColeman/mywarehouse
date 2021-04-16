@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+warehouse | home
+{% endblock title %}
+
+
+
+{% block content %}
+<!-- Page Content -->
+
+<!-- /Page Header -->
+<!-- Page Inner -->
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+            </nav>
+            <h1 class="page-title">Dashboard</h1>
+            {% include 'snippets/messages.html' %}
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="ds-stat">
+                                    <span class="ds-stat-name">Total Number Of Items</span>
+                                    <h3 class="ds-stat-number">{{items|length}}<span class="ds-stat-percent"><i
+                                                class="fas fa-caret-up"></i></span></h3>
+                                    <div class="progress" style="height: 3px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 60%"
+                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="ds-stat">
+                                    <span class="ds-stat-name">Expiring Items</span>
+                                    <h3 class="ds-stat-number">{{expiring_product|length}}<span
+                                            class="ds-stat-percent"><i class="fas fa-caret-down"></i></span></h3>
+                                    <div class="progress" style="height: 3px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 34%"
+                                            aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="ds-stat">
+                                    <span class="ds-stat-name">Expired Items</span>
+                                    <h3 class="ds-stat-number">{{expired|length}}<span class="ds-stat-percent"><i
+                                                class="fas fa-caret-up"></i></span></h3>
+                                    <div class="progress" style="height: 3px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 45%"
+                                            aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="ds-stat">
+                                    <span class="ds-stat-name">Orders Made This Month</span>
+                                    <h3 class="ds-stat-number">{{monthly_orders|length}}<span class="ds-stat-percent"><i
+                                                class="fas fa-caret-up"></i></span></h3>
+                                    <div class="progress" style="height: 3px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 57%"
+                                            aria-valuenow="57" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        {% include 'snippets/charts.html' %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Orders</h5>
+                        <div class="table-responsive">
+                            <table class="table" id='table_id'>
+                                <thead>
+
+
+
+                                    <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Department</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">OrderDate</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in monthly_orders  %}
+                                    <tr>
+                                        <th scope="row"> <a
+                                                href="{{order.item.get_absolute_url}}">{{order.item.name}}</a> </th>
+                                        <td><a href="{{order.department.get_absolute_url}}">{{order.department.department_name}}
+                                            </a></td>
+                                        <td>{{order.quantity}}</td>
+                                        <td>{{order.date_of_order}}</td>
+                                        <td><a href="{{order.get_absolute_url}}" class='btn btn-info'>View</a></td>
+                                    </tr>
+                                    {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
+    {% endblock content %}

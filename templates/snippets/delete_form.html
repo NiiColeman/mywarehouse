@@ -1,0 +1,6 @@
+<div class="contaoner">
+    <form action="{% url 'items:item_delete' pk=item.pk %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete" class="btn btn-danger">
+    </form>
+</div>

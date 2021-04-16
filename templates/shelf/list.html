@@ -1,0 +1,52 @@
+{% load static %}
+{% for shelf in shelfs  %}
+<tr>
+    <td>
+        <div class="profile-img">
+
+            {% if shelf.item.image %}
+            <img src="{{shelf.item.image.url}}" style="height:45px;width:45px;border-radius:50%;">
+            {% else %}
+            <img src="{% static './assets/images/no_image.jpg' %}" style="height:45px;width:45px;border-radius:50%;">
+            {% endif %}
+
+
+        </div>
+    </td>
+
+
+    <td href="{{item.get_absolute_url}}"> <a href="{{item.get_absolute_url}}">{{shelf.item.name}}</a></td>
+
+    {% if shelf.item.stock_on_hand <= 10 %}
+
+    <td> <span class="badge badge-danger">{{shelf.item.stock_on_hand}} LOW STOCK</span>
+    </td>
+    {% else %}
+    <td>{{shelf.item.stock_on_hand}}</td>
+    {% endif %}
+
+
+
+    <td>{{shelf.item.expiry_date}}({{shelf.item.expiry_date|timeuntil}})</td>
+
+    <td>{{shelf.shelf}}</td>
+
+
+    <td>{{shelf.quantity}}</td>
+    <td>{{shelf.date_add}}</td>
+
+    <td>
+        <a href="{{shelf.get_absolute_url}}" class="btn btn-primary">View</a>
+
+        <button type="button" class="btn btn-primary js-update-item">
+            <span class="glyphicon glyphicon-plus"></span>
+            Edit
+        </button>
+
+
+
+
+
+</tr>
+
+{% endfor %}

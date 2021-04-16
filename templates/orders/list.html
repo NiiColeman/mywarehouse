@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<!-- Page Inner -->
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="{% url 'orders:list_order' %}">Orders</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Order List</li>
+                </ol>
+            </nav>
+
+
+
+            {% include 'snippets/messages.html' %}
+            <div class="message" id="messages"></div>
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text text-center">
+                                <h5 class="card-title">Orders</h5>
+                            </div>
+                            <button type="button" class="btn btn-primary js-create-book"
+                                data-url="{% url 'orders:create_order' %}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                New Order
+                            </button>
+                            <hr>
+
+
+
+
+
+                            {% include 'orders/mylist.html' with orders=orders %}
+
+
+
+                            <div class="modal fade" id="modal-book">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div><!-- Main Wrapper -->
+
+
+    {% endblock content %}
+
+
+
+    {% block extrajs %}
+    <script src="{% static './assets/js/app.js' %}"></script>
+    {% endblock extrajs %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Items | Expiring List
+{% endblock title %}
+
+
+
+
+{% block content %}
+<!-- Page Inner -->
+<div class="page-inner no-page-title">
+    <div id="main-wrapper">
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style-1">
+                    <li class="breadcrumb-item"><a href="{% url 'items:item_list' %}">Items</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Expiring Items</li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text text-center">
+                                <h5 class="card-title">Items</h5>
+                            </div>
+
+
+                            <table class="table table-hover" id="table_id">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Name </th>
+                                        <th scope="col">Stock On Hand</th>
+                                        <th scope="col">Expiry Date</th>
+                                        <th scope="col">Shelf Number</th>
+                                        <th scope="col">Actions</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% include 'snippets/item_list.html' with items=expiring_products %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div><!-- Main Wrapper -->
+    {% endblock content %}
